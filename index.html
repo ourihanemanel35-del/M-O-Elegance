@@ -8,6 +8,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Firebase SDKs -->
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+
   <style>
     body { font-family: 'Plus Jakarta Sans', 'Tajawal', sans-serif; background-color: #FAF9F6; }
     .brand-font { font-family: 'Cinzel', serif; }
@@ -67,7 +72,11 @@
     </div>
 
     <!-- Grille des produits -->
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6" id="productsList"></div>
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6" id="productsList">
+      <div class="col-span-full py-12 text-center text-stone-400">
+        <p class="text-sm">Chargement de la boutique...</p>
+      </div>
+    </div>
 
     <!-- Formulaire de Commande Express -->
     <div id="commande-section" class="mt-14 max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-stone-200">
@@ -238,7 +247,7 @@
   <div id="adminModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center pb-4 border-b">
-        <h3 class="font-bold text-lg text-stone-900">Espace Gérant (لوحة الإدارة)</h3>
+        <h3 class="font-bold text-lg text-stone-900">Espace Gérant (لوحة الإدارة السحابية)</h3>
         <button onclick="closeAdmin()" class="text-stone-400 hover:text-stone-600 text-xl font-bold">✕</button>
       </div>
 
@@ -249,13 +258,13 @@
           <button onclick="clearAllOrders()" class="text-[10px] text-rose-600 underline">مسح الكل</button>
         </div>
         <div id="adminOrdersList" class="space-y-2 max-h-48 overflow-y-auto text-xs">
-          <p class="text-stone-400 text-center py-2">لا توجد طلبات بعد.</p>
+          <p class="text-stone-400 text-center py-2">Chargement des commandes...</p>
         </div>
       </div>
 
       <!-- إضافة موديل -->
       <div class="mt-5 bg-stone-50 p-4 rounded-2xl border border-stone-200">
-        <h4 class="font-bold text-xs uppercase tracking-wider text-stone-700 mb-3">+ Ajouter un modèle</h4>
+        <h4 class="font-bold text-xs uppercase tracking-wider text-stone-700 mb-3">+ Ajouter un modèle (En direct)</h4>
         <div class="space-y-3">
           <div>
             <label class="block text-[11px] font-semibold text-stone-600 mb-1">Nom du modèle</label>
@@ -317,7 +326,7 @@
           </div>
 
           <button id="submitProdBtn" onclick="addNewProduct()" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-2.5 rounded-lg text-xs shadow mt-2">
-            Ajouter immédiatement à la boutique
+            Publier sur toute la boutique
           </button>
         </div>
       </div>
@@ -339,6 +348,20 @@
   </footer>
 
   <script>
+    // 1. Initialisation de Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyCTA0J49yChiJKQqb4H_5Z_yemsgvdV5MM",
+      authDomain: "mo-elegance.firebaseapp.com",
+      projectId: "mo-elegance",
+      storageBucket: "mo-elegance.firebasestorage.app",
+      messagingSenderId: "964580698587",
+      appId: "1:964580698587:web:a2a60409db67b47a9f5ffe",
+      measurementId: "G-GCKPEQ4PJX"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+
     const algeriaCommunes = {
       "1": ["Adrar", "Tamest", "Charouine", "Reggane", "In Zghmir", "Tit", "Zaouiet Kounta", "Aoulef", "Timokten", "Fenoughil"],
       "2": ["Chlef", "Ténès", "Boukadir", "Oued Fodda", "El Karimia", "Taougrite", "Beni Haoua", "Sobha", "Zeboudja", "Abou El Hassan"],
@@ -396,23 +419,36 @@
       "58": ["El Menia", "Hassi Gara", "Hassi Fehal"]
     };
 
-    let defaultProducts = [];
-
-    let stored = localStorage.getItem('mo_products');
     let products = [];
-    if (stored) {
-      try {
-        let parsed = JSON.parse(stored);
-        products = parsed.filter(p => p.nom !== "Robe Sama" || (p.images && p.images[0] && !p.images[0].includes("unsplash.com")));
-      } catch (e) {
-        products = [];
-      }
-    }
-
-    let orders = JSON.parse(localStorage.getItem('mo_orders')) || [];
-    let selectedProduct = products.length > 0 ? products[0] : null;
+    let orders = [];
+    let selectedProduct = null;
     let currentFilter = 'all';
     let uploadedImagesList = [];
+
+    // مزامنة حية وفورية للمنتجات من Firebase
+    db.collection("products").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
+      products = [];
+      snapshot.forEach((doc) => {
+        products.push({ firestoreId: doc.id, ...doc.data() });
+      });
+      if (!selectedProduct && products.length > 0) {
+        selectedProduct = products[0];
+      }
+      renderProducts();
+    }, (error) => {
+      console.error("Erreur Firestore produits:", error);
+    });
+
+    // مزامنة حية وفورية للطلبات من Firebase
+    db.collection("orders").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
+      orders = [];
+      snapshot.forEach((doc) => {
+        orders.push({ firestoreId: doc.id, ...doc.data() });
+      });
+      renderOrdersList();
+    }, (error) => {
+      console.error("Erreur Firestore commandes:", error);
+    });
 
     function compressImageFile(file) {
       return new Promise((resolve) => {
@@ -538,7 +574,7 @@
         `;
       });
 
-      products.forEach((p, idx) => {
+      products.forEach((p) => {
         const thumb = (p.images && p.images.length) ? p.images[0] : (p.image || "");
         adminContainer.innerHTML += `
           <div class="flex items-center justify-between p-2.5 bg-stone-50 border rounded-xl text-xs">
@@ -549,7 +585,7 @@
                 <p class="text-stone-500">${p.prix} DZD (${(p.images || [p.image]).length} photo(s))</p>
               </div>
             </div>
-            <button onclick="deleteProduct(${idx})" class="text-rose-600 hover:text-rose-800 font-bold px-2 py-1">Supprimer ✕</button>
+            <button onclick="deleteProduct('${p.firestoreId}')" class="text-rose-600 hover:text-rose-800 font-bold px-2 py-1">Supprimer ✕</button>
           </div>
         `;
       });
@@ -639,20 +675,22 @@
       const typeStr = isHome ? "A domicile" : "Stopdesk";
       const total = document.getElementById('sumTotal').textContent;
 
-      // 1. حفظ الطلب في ذاكرة لوحة التحكم
-      const orderData = {
-        id: Date.now(),
-        date: new Date().toLocaleString('fr-FR'),
-        item, size, color, name, phone, wilayaName, commune, address, typeStr, total
-      };
-      orders.unshift(orderData);
-      localStorage.setItem('mo_orders', JSON.stringify(orders));
-
-      // 2. إرسال إشعار فوري إلى الإيميل عبر Formspree
       const btn = document.getElementById('btnSubmitOrder');
-      btn.textContent = "Envoi en cours...";
+      btn.textContent = "Enregistrement en cours...";
       btn.disabled = true;
 
+      // 1. تسجيل الطلب في Firebase السحابية
+      try {
+        await db.collection("orders").add({
+          timestamp: Date.now(),
+          date: new Date().toLocaleString('fr-FR'),
+          item, size, color, name, phone, wilayaName, commune, address, typeStr, total
+        });
+      } catch (err) {
+        console.error("Erreur sauvegarde Firestore:", err);
+      }
+
+      // 2. إرسال إشعار فوري إلى الإيميل
       try {
         await fetch("https://formspree.io/f/xvgzvjqv", {
           method: "POST",
@@ -672,7 +710,7 @@
           })
         });
       } catch (err) {
-        console.log("Notification envoyée");
+        console.log("Notification Formspree passée");
       }
 
       document.getElementById('orderSuccess').classList.remove('hidden');
@@ -717,7 +755,7 @@
         return;
       }
 
-      container.innerHTML = orders.map((o, idx) => `
+      container.innerHTML = orders.map((o) => `
         <div class="bg-white p-2.5 rounded-xl border border-stone-200 flex justify-between items-start gap-2">
           <div>
             <div class="flex items-center gap-2">
@@ -728,28 +766,29 @@
             <p class="text-stone-500 text-[11px]">📍 ${o.wilayaName} (${o.commune}) - ${o.typeStr}</p>
             <p class="text-[10px] text-stone-400 mt-0.5">🕒 ${o.date} | Total: <span class="font-bold text-stone-800">${o.total}</span></p>
           </div>
-          <button onclick="deleteOrder(${idx})" class="text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5">✕</button>
+          <button onclick="deleteOrder('${o.firestoreId}')" class="text-rose-500 hover:text-rose-700 font-bold px-1.5 py-0.5">✕</button>
         </div>
       `).join('');
     }
 
-    function deleteOrder(idx) {
-      if (confirm("حذف هذا الطلب من القائمة؟")) {
-        orders.splice(idx, 1);
-        localStorage.setItem('mo_orders', JSON.stringify(orders));
-        renderOrdersList();
+    async function deleteOrder(docId) {
+      if (confirm("حذف هذا الطلب نهائياً من قاعدة البيانات؟")) {
+        try {
+          await db.collection("orders").doc(docId).delete();
+        } catch (e) {
+          alert("Erreur lors de la suppression !");
+        }
       }
     }
 
-    function clearAllOrders() {
+    async function clearAllOrders() {
       if (confirm("هل أنتِ متأكدة من مسح كل الطلبات المسجلة؟")) {
-        orders = [];
-        localStorage.setItem('mo_orders', JSON.stringify(orders));
-        renderOrdersList();
+        const snapshot = await db.collection("orders").get();
+        snapshot.forEach((doc) => doc.ref.delete());
       }
     }
 
-    function addNewProduct() {
+    async function addNewProduct() {
       const nom = document.getElementById('newProdName').value;
       const prix = parseInt(document.getElementById('newProdPrice').value);
       const oldPrix = parseInt(document.getElementById('newProdOldPrice').value) || null;
@@ -772,10 +811,15 @@
         ? uploadedImagesList 
         : ["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"];
 
+      const submitBtn = document.getElementById('submitProdBtn');
+      submitBtn.textContent = "Publication sur le cloud...";
+      submitBtn.disabled = true;
+
       try {
-        products.push({ id: Date.now(), nom, prix, oldPrix, cat, sizes, colors, images });
-        localStorage.setItem('mo_products', JSON.stringify(products));
-        renderProducts();
+        await db.collection("products").add({
+          nom, prix, oldPrix, cat, sizes, colors, images,
+          createdAt: Date.now()
+        });
 
         document.getElementById('newProdName').value = '';
         document.getElementById('newProdPrice').value = '';
@@ -786,17 +830,22 @@
         document.getElementById('imagePreviewContainer').classList.add('hidden');
 
         closeAdmin();
-        alert("Le modèle a été ajouté avec succès à la boutique !");
+        alert("Félicitations ! Le modèle est maintenant en ligne pour tous les visiteurs.");
       } catch (err) {
-        alert("Mémoire saturée ! Supprimez d'anciens modèles ou réduisez le nombre de photos.");
+        alert("Erreur lors de l'enregistrement. Vérifiez votre connexion Internet !");
+      } finally {
+        submitBtn.textContent = "Publier sur toute la boutique";
+        submitBtn.disabled = false;
       }
     }
 
-    function deleteProduct(index) {
-      if (confirm("Supprimer ce modèle ?")) {
-        products.splice(index, 1);
-        localStorage.setItem('mo_products', JSON.stringify(products));
-        renderProducts();
+    async function deleteProduct(docId) {
+      if (confirm("Supprimer définitivement ce modèle pour tous les visiteurs ?")) {
+        try {
+          await db.collection("products").doc(docId).delete();
+        } catch (e) {
+          alert("Erreur lors de la suppression !");
+        }
       }
     }
 
@@ -808,7 +857,6 @@
     }
 
     onWilayaChange();
-    renderProducts();
   </script>
 </body>
 </html>
