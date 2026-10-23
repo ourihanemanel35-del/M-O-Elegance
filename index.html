@@ -207,7 +207,7 @@
         <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-1 text-xs text-stone-600">
           <div class="flex justify-between">
             <span>Prix du modèle :</span>
-            <span id="sumItemPrice" class="font-semibold text-stone-900">4 700 DZD</span>
+            <span id="sumItemPrice" class="font-semibold text-stone-900">0 DZD</span>
           </div>
           <div class="flex justify-between">
             <span>Frais de livraison :</span>
@@ -215,7 +215,7 @@
           </div>
           <div class="flex justify-between pt-2 border-t border-stone-200 text-sm font-bold text-stone-900">
             <span>Total à payer :</span>
-            <span id="sumTotal" class="text-stone-900 font-extrabold text-base">5 200 DZD</span>
+            <span id="sumTotal" class="text-stone-900 font-extrabold text-base">500 DZD</span>
           </div>
         </div>
 
@@ -294,7 +294,7 @@
             <input type="text" id="newProdColors" placeholder="Ex: Bordeaux, Noir, Beige..." class="w-full border p-2 text-xs rounded-lg bg-white" />
           </div>
 
-          <!-- Multi-Photos avec compression automatique -->
+          <!-- Multi-Photos avec compression -->
           <div>
             <label class="block text-[11px] font-semibold text-stone-700 mb-1">Photos depuis la galerie :</label>
             <input type="file" id="newProdFiles" accept="image/*" multiple class="w-full text-xs text-stone-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-stone-200 file:text-stone-800 hover:file:bg-stone-300" />
@@ -384,27 +384,25 @@
       "58": ["El Menia", "Hassi Gara", "Hassi Fehal"]
     };
 
-    let defaultProducts = [
-      {
-        id: 1,
-        nom: "Robe Sama",
-        prix: 4700,
-        oldPrix: 5900,
-        cat: "Robes",
-        sizes: ["38", "40", "42", "44"],
-        colors: ["Noir", "Beige", "Vert émeraude"],
-        images: [
-          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"
-        ]
-      }
-    ];
+    // القائمة الافتراضية فارغة تماماً لمنع ظهور أي موديل قديم أو تجريبي
+    let defaultProducts = [];
 
-    let products = JSON.parse(localStorage.getItem('mo_products')) || defaultProducts;
-    let selectedProduct = products[0] || null;
+    // تنظيف البيانات التجريبية القديمة تلقائياً من ذاكرة المتصفح
+    let stored = localStorage.getItem('mo_products');
+    let products = [];
+    if (stored) {
+      try {
+        let parsed = JSON.parse(stored);
+        products = parsed.filter(p => p.nom !== "Robe Sama" || (p.images && p.images[0] && !p.images[0].includes("unsplash.com")));
+      } catch (e) {
+        products = [];
+      }
+    }
+
+    let selectedProduct = products.length > 0 ? products[0] : null;
     let currentFilter = 'all';
     let uploadedImagesList = [];
 
-    // Fonction de compression d'image pour téléphone mobile
     function compressImageFile(file) {
       return new Promise((resolve) => {
         const reader = new FileReader();
@@ -412,7 +410,7 @@
           const img = new Image();
           img.onload = function() {
             const canvas = document.createElement('canvas');
-            const maxDim = 800; // Résolution optimale pour mobile
+            const maxDim = 800;
             let width = img.width;
             let height = img.height;
 
@@ -432,7 +430,6 @@
             canvas.height = height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0, width, height);
-            // Compression en JPEG qualité web
             resolve(canvas.toDataURL('image/jpeg', 0.65));
           };
           img.src = e.target.result;
@@ -441,7 +438,6 @@
       });
     }
 
-    // Gestion du téléchargement avec compression fluide
     document.getElementById('newProdFiles').addEventListener('change', async function(e) {
       const files = Array.from(e.target.files);
       uploadedImagesList = [];
@@ -492,9 +488,17 @@
         ? products 
         : products.filter(p => p.cat === currentFilter);
 
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="col-span-full py-12 text-center text-stone-400">
+            <p class="text-sm">Aucun modèle disponible pour le moment.</p>
+          </div>
+        `;
+      }
+
       filtered.forEach((p) => {
         const idx = products.indexOf(p);
-        const mainImg = (p.images && p.images.length) ? p.images[0] : (p.image || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80");
+        const mainImg = (p.images && p.images.length) ? p.images[0] : (p.image || "");
         const countBadge = (p.images && p.images.length > 1) ? `<span class="absolute bottom-2 right-2 bg-stone-900/80 backdrop-blur text-white text-[9px] px-2 py-0.5 rounded-full font-bold">📷 ${p.images.length} photos</span>` : '';
         const oldPriceHtml = p.oldPrix ? `<span class="text-xs text-stone-400 line-through mr-1">${p.oldPrix.toLocaleString()} DA</span>` : '';
         const badgeDiscount = p.oldPrix ? `<span class="absolute top-2 left-2 bg-rose-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Promo</span>` : '';
@@ -568,11 +572,11 @@
 
       const imgs = (selectedProduct.images && selectedProduct.images.length) 
         ? selectedProduct.images 
-        : [selectedProduct.image || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"];
+        : [selectedProduct.image || ""];
 
       const mainImg = document.getElementById('mainOrderImg');
       const thumbsContainer = document.getElementById('thumbnailsContainer');
-      mainImg.src = imgs[0];
+      mainImg.src = imgs[0] || "";
       thumbsContainer.innerHTML = '';
 
       if (imgs.length > 1) {
@@ -683,7 +687,6 @@
         localStorage.setItem('mo_products', JSON.stringify(products));
         renderProducts();
 
-        // Réinitialisation des champs
         document.getElementById('newProdName').value = '';
         document.getElementById('newProdPrice').value = '';
         document.getElementById('newProdOldPrice').value = '';
@@ -695,7 +698,7 @@
         closeAdmin();
         alert("Le modèle a été ajouté avec succès à la boutique !");
       } catch (err) {
-        alert("Mémoire saturée ! Essayez de supprimer un ancien modèle ou de sélectionner moins de photos.");
+        alert("Mémoire saturée ! Supprimez d'anciens modèles ou réduisez le nombre de photos.");
       }
     }
 
