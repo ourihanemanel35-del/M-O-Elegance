@@ -1,56 +1,392 @@
-<select id="wilayaSelect" onchange="updateDeliveryFee()" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-600 outline-none">
-  <option value="1" data-fee-home="1450" data-fee-desk="1070">01 - أدرار (Adrar)</option>
-  <option value="2" data-fee-home="850" data-fee-desk="570">02 - الشلف (Chlef)</option>
-  <option value="3" data-fee-home="950" data-fee-desk="670">03 - الأغواط (Laghouat)</option>
-  <option value="4" data-fee-home="800" data-fee-desk="570">04 - أم البواقي (Oum El Bouaghi)</option>
-  <option value="5" data-fee-home="900" data-fee-desk="570">05 - باتنة (Batna)</option>
-  <option value="6" data-fee-home="900" data-fee-desk="570">06 - بجاية (Béjaïa)</option>
-  <option value="7" data-fee-home="950" data-fee-desk="670">07 - بسكرة (Biskra)</option>
-  <option value="8" data-fee-home="1200" data-fee-desk="770">08 - بشار (Béchar)</option>
-  <option value="9" data-fee-home="700" data-fee-desk="520">09 - البليدة (Blida)</option>
-  <option value="10" data-fee-home="750" data-fee-desk="570">10 - البويرة (Bouira)</option>
-  <option value="11" data-fee-home="1650" data-fee-desk="1270">11 - تمنراست (Tamanrasset)</option>
-  <option value="12" data-fee-home="950" data-fee-desk="570">12 - تبسة (Tébessa)</option>
-  <option value="13" data-fee-home="900" data-fee-desk="570">13 - تلمسان (Tlemcen)</option>
-  <option value="14" data-fee-home="850" data-fee-desk="520">14 - تيارت (Tiaret)</option>
-  <option value="15" data-fee-home="750" data-fee-desk="570">15 - تيزي وزو (Tizi Ouzou)</option>
-  <option value="16" data-fee-home="600" data-fee-desk="520">16 - الجزائر (Alger)</option>
-  <option value="17" data-fee-home="950" data-fee-desk="670">17 - الجلفة (Djelfa)</option>
-  <option value="18" data-fee-home="900" data-fee-desk="570">18 - جيجل (Jijel)</option>
-  <option value="19" data-fee-home="850" data-fee-desk="570">19 - سطيف (Sétif)</option>
-  <option value="20" data-fee-home="900" data-fee-desk="620">20 - سعيدة (Saïda)</option>
-  <option value="21" data-fee-home="900" data-fee-desk="570">21 - سكيكدة (Skikda)</option>
-  <option value="22" data-fee-home="900" data-fee-desk="570">22 - سيدي بلعباس (Sidi Bel Abbès)</option>
-  <option value="23" data-fee-home="900" data-fee-desk="570">23 - عنابة (Annaba)</option>
-  <option value="24" data-fee-home="850" data-fee-desk="570">24 - قالمة (Guelma)</option>
-  <option value="25" data-fee-home="850" data-fee-desk="570">25 - قسنطينة (Constantine)</option>
-  <option value="26" data-fee-home="850" data-fee-desk="570">26 - المدية (Médéa)</option>
-  <option value="27" data-fee-home="900" data-fee-desk="570">27 - مستغانم (Mostaganem)</option>
-  <option value="28" data-fee-home="900" data-fee-desk="570">28 - المسيلة (M'Sila)</option>
-  <option value="29" data-fee-home="900" data-fee-desk="570">29 - معسكر (Mascara)</option>
-  <option value="30" data-fee-home="1000" data-fee-desk="670">30 - ورقلة (Ouargla)</option>
-  <option value="31" data-fee-home="850" data-fee-desk="570">31 - وهران (Oran)</option>
-  <option value="32" data-fee-home="1100" data-fee-desk="670">32 - البيض (El Bayadh)</option>
-  <option value="34" data-fee-home="850" data-fee-desk="570">34 - برج بوعريريج (Bordj Bou Arreridj)</option>
-  <option value="35" data-fee-home="500" data-fee-desk="420" selected>35 - بومرداس (Boumerdès)</option>
-  <option value="36" data-fee-home="900" data-fee-desk="570">36 - الطارف (El Tarf)</option>
-  <option value="38" data-fee-home="900" data-fee-desk="520">38 - تيسمسيلت (Tissemsilt)</option>
-  <option value="39" data-fee-home="1000" data-fee-desk="670">39 - الوادي (El Oued)</option>
-  <option value="40" data-fee-home="900" data-fee-desk="570">40 - خنشلة (Khenchela)</option>
-  <option value="41" data-fee-home="900" data-fee-desk="570">41 - سوق أهراس (Souk Ahras)</option>
-  <option value="42" data-fee-home="800" data-fee-desk="570">42 - تيبازة (Tipaza)</option>
-  <option value="43" data-fee-home="900" data-fee-desk="570">43 - ميلة (Mila)</option>
-  <option value="44" data-fee-home="900" data-fee-desk="570">44 - عين الدفلى (Aïn Defla)</option>
-  <option value="45" data-fee-home="1200" data-fee-desk="670">45 - النعامة (Naâma)</option>
-  <option value="46" data-fee-home="900" data-fee-desk="570">46 - عين تموشنت (Aïn Témouchent)</option>
-  <option value="47" data-fee-home="950" data-fee-desk="670">47 - غرداية (Ghardaïa)</option>
-  <option value="48" data-fee-home="900" data-fee-desk="570">48 - غليزان (Relizane)</option>
-  <option value="49" data-fee-home="1450" data-fee-desk="1070">49 - تيميمون (Timimoun)</option>
-  <option value="51" data-fee-home="950" data-fee-desk="670">51 - أولاد جلال (Ouled Djellal)</option>
-  <option value="52" data-fee-home="1400" data-fee-desk="1070">52 - بني عباس (Béni Abbès)</option>
-  <option value="53" data-fee-home="1650" data-fee-desk="1270">53 - عين صالح (In Salah)</option>
-  <option value="54" data-fee-home="1650" data-fee-desk="1650">54 - عين قزام (In Guezzam)</option>
-  <option value="55" data-fee-home="950" data-fee-desk="670">55 - تقرت (Touggourt)</option>
-  <option value="57" data-fee-home="950" data-fee-desk="950">57 - المغير (El M'Ghair)</option>
-  <option value="58" data-fee-home="1100" data-fee-desk="670">58 - المنيعة (El Menia)</option>
-</select>
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>M&O Elegance - Where Style Meets Grace</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Tajawal', sans-serif; background-color: #FAF8F5; }
+    .brand-font { font-family: 'Cinzel', serif; }
+  </style>
+</head>
+<body class="text-stone-800 antialiased min-h-screen flex flex-col justify-between">
+
+  <!-- Header -->
+  <header class="bg-white/95 backdrop-blur shadow-sm sticky top-0 z-40 border-b border-amber-900/10">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-3">
+        <div class="w-12 h-12 rounded-full border border-amber-600/30 flex items-center justify-center bg-[#FAF8F5] shadow-inner">
+          <span class="brand-font text-xl font-bold text-amber-900">MO</span>
+        </div>
+        <div>
+          <h1 class="brand-font text-lg md:text-xl font-bold tracking-widest text-amber-950 uppercase leading-none">M&O Elegance</h1>
+          <p class="text-[10px] tracking-wide text-amber-700 italic">Where Style Meets Grace</p>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <button id="langBtn" onclick="toggleLanguage()" class="px-3 py-1 text-xs font-semibold rounded-full border border-stone-300 hover:bg-stone-100 transition">العربية</button>
+        <button onclick="openAdmin()" class="bg-amber-900/10 text-amber-900 px-3 py-1 rounded-full text-xs font-bold hover:bg-amber-900/20">⚙️ إدارة</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Bannière -->
+  <section class="relative bg-gradient-to-r from-[#211E1D] to-[#38312E] text-stone-100 py-12 px-4 text-center border-b border-amber-600/20">
+    <div class="max-w-3xl mx-auto">
+      <span class="text-amber-400 text-xs tracking-widest uppercase font-semibold block mb-2" id="txt-subhead">Boutique Officielle Algérie</span>
+      <h2 class="brand-font text-3xl md:text-4xl font-bold tracking-wide text-stone-50 mb-3" id="txt-title">Élégance, Modernité & Finesse</h2>
+      <p class="text-stone-300 text-xs md:text-sm leading-relaxed mb-6" id="txt-desc">Découvrez nos créations exclusives disponibles en livraison avec paiement à la réception.</p>
+      <a href="#catalogue" class="inline-block bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 text-white px-6 py-2.5 rounded-full text-xs font-semibold tracking-wider shadow-lg">Voir la collection</a>
+    </div>
+  </section>
+
+  <!-- Catalogue Dynamique -->
+  <main id="catalogue" class="max-w-7xl mx-auto px-4 py-10 w-full flex-grow">
+    <div class="text-center mb-8">
+      <h3 class="brand-font text-2xl font-bold text-stone-900 tracking-wider" id="txt-cat-title">Nos Articles Disponibles</h3>
+      <div class="w-16 h-0.5 bg-amber-600 mx-auto mt-2"></div>
+    </div>
+
+    <!-- Grille des produits -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" id="productsList"></div>
+
+    <!-- Formulaire de Commande COD -->
+    <div id="commande-section" class="mt-14 max-w-2xl mx-auto bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-stone-200">
+      <div class="text-center mb-6">
+        <h3 class="brand-font text-xl font-bold text-stone-900" id="txt-form-title">Commander en quelques clics</h3>
+        <p class="text-xs text-stone-500 mt-1" id="txt-form-desc">Paiement à la livraison dans toutes les wilayas</p>
+      </div>
+
+      <form id="orderForm" onsubmit="handleOrder(event)" class="space-y-4">
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Article sélectionné</label>
+          <input type="text" id="selectedItem" value="" readonly class="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 font-bold" />
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Nom et Prénom *</label>
+            <input type="text" id="custName" required placeholder="Votre nom complet" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-600 outline-none" />
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Numéro de téléphone *</label>
+            <input type="tel" id="custPhone" required placeholder="05/06/07XXXXXXXX" pattern="^(0)(5|6|7)[0-9]{8}$" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-600 outline-none" />
+          </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Wilaya *</label>
+            <select id="wilayaSelect" onchange="updateDeliveryFee()" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-600 outline-none">
+              <option value="1" data-fee-home="1450" data-fee-desk="1070">01 - Adrar (أدرار)</option>
+              <option value="2" data-fee-home="850" data-fee-desk="570">02 - Chlef (الشلف)</option>
+              <option value="3" data-fee-home="950" data-fee-desk="670">03 - Laghouat (الأغواط)</option>
+              <option value="4" data-fee-home="800" data-fee-desk="570">04 - Oum El Bouaghi (أم البواقي)</option>
+              <option value="5" data-fee-home="900" data-fee-desk="570">05 - Batna (باتنة)</option>
+              <option value="6" data-fee-home="900" data-fee-desk="570">06 - Béjaïa (بجاية)</option>
+              <option value="7" data-fee-home="950" data-fee-desk="670">07 - Biskra (بسكرة)</option>
+              <option value="8" data-fee-home="1200" data-fee-desk="770">08 - Béchar (بشار)</option>
+              <option value="9" data-fee-home="700" data-fee-desk="520">09 - Blida (البليدة)</option>
+              <option value="10" data-fee-home="750" data-fee-desk="570">10 - Bouira (البويرة)</option>
+              <option value="11" data-fee-home="1650" data-fee-desk="1270">11 - Tamanrasset (تمنراست)</option>
+              <option value="12" data-fee-home="950" data-fee-desk="570">12 - Tébessa (تبسة)</option>
+              <option value="13" data-fee-home="900" data-fee-desk="570">13 - Tlemcen (تلمسان)</option>
+              <option value="14" data-fee-home="850" data-fee-desk="520">14 - Tiaret (تيارت)</option>
+              <option value="15" data-fee-home="750" data-fee-desk="570">15 - Tizi Ouzou (تيزي وزو)</option>
+              <option value="16" data-fee-home="600" data-fee-desk="520">16 - Alger (الجزائر)</option>
+              <option value="17" data-fee-home="950" data-fee-desk="670">17 - Djelfa (الجلفة)</option>
+              <option value="18" data-fee-home="900" data-fee-desk="570">18 - Jijel (جيجل)</option>
+              <option value="19" data-fee-home="850" data-fee-desk="570">19 - Sétif (سطيف)</option>
+              <option value="20" data-fee-home="900" data-fee-desk="620">20 - Saïda (سعيدة)</option>
+              <option value="21" data-fee-home="900" data-fee-desk="570">21 - Skikda (سكيكدة)</option>
+              <option value="22" data-fee-home="900" data-fee-desk="570">22 - Sidi Bel Abbès (سيدي بلعباس)</option>
+              <option value="23" data-fee-home="900" data-fee-desk="570">23 - Annaba (عنابة)</option>
+              <option value="24" data-fee-home="850" data-fee-desk="570">24 - Guelma (قالمة)</option>
+              <option value="25" data-fee-home="850" data-fee-desk="570">25 - Constantine (قسنطينة)</option>
+              <option value="26" data-fee-home="850" data-fee-desk="570">26 - Médéa (المدية)</option>
+              <option value="27" data-fee-home="900" data-fee-desk="570">27 - Mostaganem (مستغانم)</option>
+              <option value="28" data-fee-home="900" data-fee-desk="570">28 - M'Sila (المسيلة)</option>
+              <option value="29" data-fee-home="900" data-fee-desk="570">29 - Mascara (معسكر)</option>
+              <option value="30" data-fee-home="1000" data-fee-desk="670">30 - Ouargla (ورقلة)</option>
+              <option value="31" data-fee-home="850" data-fee-desk="570">31 - Oran (وهران)</option>
+              <option value="32" data-fee-home="1100" data-fee-desk="670">32 - El Bayadh (البيض)</option>
+              <option value="34" data-fee-home="850" data-fee-desk="570">34 - Bordj Bou Arreridj (برج بوعريريج)</option>
+              <option value="35" data-fee-home="500" data-fee-desk="420" selected>35 - Boumerdès (بومرداس)</option>
+              <option value="36" data-fee-home="900" data-fee-desk="570">36 - El Tarf (الطارف)</option>
+              <option value="38" data-fee-home="900" data-fee-desk="520">38 - Tissemsilt (تيسمسيلت)</option>
+              <option value="39" data-fee-home="1000" data-fee-desk="670">39 - El Oued (الوادي)</option>
+              <option value="40" data-fee-home="900" data-fee-desk="570">40 - Khenchela (خنشلة)</option>
+              <option value="41" data-fee-home="900" data-fee-desk="570">41 - Souk Ahras (سوق أهراس)</option>
+              <option value="42" data-fee-home="800" data-fee-desk="570">42 - Tipaza (تيبازة)</option>
+              <option value="43" data-fee-home="900" data-fee-desk="570">43 - Mila (ميلة)</option>
+              <option value="44" data-fee-home="900" data-fee-desk="570">44 - Aïn Defla (عين الدفلى)</option>
+              <option value="45" data-fee-home="1200" data-fee-desk="670">45 - Naâma (النعامة)</option>
+              <option value="46" data-fee-home="900" data-fee-desk="570">46 - Aïn Témouchent (عين تموشنت)</option>
+              <option value="47" data-fee-home="950" data-fee-desk="670">47 - Ghardaïa (غرداية)</option>
+              <option value="48" data-fee-home="900" data-fee-desk="570">48 - Relizane (غليزان)</option>
+              <option value="49" data-fee-home="1450" data-fee-desk="1070">49 - Timimoun (تيميمون)</option>
+              <option value="51" data-fee-home="950" data-fee-desk="670">51 - Ouled Djellal (أولاد جلال)</option>
+              <option value="52" data-fee-home="1400" data-fee-desk="1070">52 - Béni Abbès (بني عباس)</option>
+              <option value="53" data-fee-home="1650" data-fee-desk="1270">53 - In Salah (عين صالح)</option>
+              <option value="54" data-fee-home="1650" data-fee-desk="1650">54 - In Guezzam (عين قزام)</option>
+              <option value="55" data-fee-home="950" data-fee-desk="670">55 - Touggourt (تقرت)</option>
+              <option value="57" data-fee-home="950" data-fee-desk="950">57 - El M'Ghair (المغير)</option>
+              <option value="58" data-fee-home="1100" data-fee-desk="670">58 - El Menia (المنيعة)</option>
+            </select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Commune *</label>
+            <input type="text" id="custCommune" required placeholder="Votre commune" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-600 outline-none" />
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Adresse complète *</label>
+          <input type="text" id="custAddress" required placeholder="Rue, quartier, repère..." class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-600 outline-none" />
+        </div>
+
+        <div>
+          <label class="block text-xs font-semibold text-stone-700 mb-1">Mode de livraison</label>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center gap-2 border border-stone-200 p-2.5 rounded-lg cursor-pointer hover:bg-stone-50">
+              <input type="radio" name="deliveryType" value="home" checked onchange="updateDeliveryFee()" />
+              <span class="text-xs font-medium">À domicile (المنزل)</span>
+            </label>
+            <label class="flex items-center gap-2 border border-stone-200 p-2.5 rounded-lg cursor-pointer hover:bg-stone-50">
+              <input type="radio" name="deliveryType" value="desk" onchange="updateDeliveryFee()" />
+              <span class="text-xs font-medium">Bureau (المكتب)</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 space-y-1.5 text-xs text-stone-600">
+          <div class="flex justify-between">
+            <span>سعر المنتج :</span>
+            <span id="sumItemPrice" class="font-semibold text-stone-800">4 900 DZD</span>
+          </div>
+          <div class="flex justify-between">
+            <span>تكلفة التوصيل :</span>
+            <span id="sumShipping" class="font-semibold text-stone-800">500 DZD</span>
+          </div>
+          <div class="flex justify-between pt-2 border-t border-stone-200 text-sm font-bold text-stone-900">
+            <span>المجموع الإجمالي :</span>
+            <span id="sumTotal" class="text-amber-800 font-extrabold">5 400 DZD</span>
+          </div>
+        </div>
+
+        <button type="submit" class="w-full bg-gradient-to-r from-amber-700 to-amber-600 hover:from-amber-600 text-white font-bold py-3.5 rounded-xl shadow-md transition text-sm">
+          تأكيد الطلب (الدفع عند الاستلام)
+        </button>
+      </form>
+
+      <div id="orderSuccess" class="hidden mt-6 bg-emerald-50 border border-emerald-200 text-emerald-800 p-5 rounded-2xl text-center">
+        <h4 class="font-bold text-sm">تم تسجيل الطلب بنجاح!</h4>
+        <p class="text-xs mt-1">شكراً لثقتكم. سنتواصل معكم هاتفياً لتأكيد الإرسال.</p>
+        <a id="waLink" href="#" target="_blank" class="mt-4 inline-block bg-emerald-600 text-white text-xs px-5 py-2.5 rounded-xl font-bold shadow hover:bg-emerald-700">
+          تأكيد الطلب فوراً عبر واتساب
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- Modal Admin -->
+  <div id="adminModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+    <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
+      <div class="flex justify-between items-center pb-4 border-b">
+        <h3 class="font-bold text-lg text-amber-950">لوحة التحكم (Espace Gérant)</h3>
+        <button onclick="closeAdmin()" class="text-stone-400 hover:text-stone-600 text-xl font-bold">✕</button>
+      </div>
+
+      <div class="mt-4 bg-stone-50 p-4 rounded-2xl border border-stone-200">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-amber-800 mb-3">+ إضافة منتج جديد</h4>
+        <div class="space-y-3">
+          <input type="text" id="newProdName" placeholder="اسم المنتج (مثال: Robe Sama)" class="w-full border p-2 text-xs rounded-lg" />
+          <input type="number" id="newProdPrice" placeholder="السعر بالدينار (مثال: 4900)" class="w-full border p-2 text-xs rounded-lg" />
+          <input type="text" id="newProdCat" placeholder="الفئة (مثال: Vêtements)" class="w-full border p-2 text-xs rounded-lg" />
+          <input type="text" id="newProdImg" placeholder="رابط صورة المنتج" class="w-full border p-2 text-xs rounded-lg" />
+          <button onclick="addNewProduct()" class="w-full bg-amber-800 hover:bg-amber-700 text-white font-bold py-2 rounded-lg text-xs">
+            حفظ وإضافة للمتجر فوراً
+          </button>
+        </div>
+      </div>
+
+      <div class="mt-6">
+        <h4 class="font-bold text-xs uppercase tracking-wider text-stone-600 mb-3">المنتجات المعروضة</h4>
+        <div id="adminProductsList" class="space-y-2"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="bg-stone-950 text-stone-400 py-6 px-4 text-center text-xs">
+    <p class="brand-font text-stone-200 font-bold tracking-widest text-sm">M&O ELEGANCE</p>
+    <p class="italic text-stone-400">Where Style Meets Grace — Algérie</p>
+    <button onclick="openAdmin()" class="mt-2 text-[11px] text-amber-500/80 hover:text-amber-400 underline">Espace Gérant (لوحة الإدارة)</button>
+  </footer>
+
+  <script>
+    let defaultProducts = [
+      {
+        id: 1,
+        nom: "Robe Sama",
+        prix: 4900,
+        cat: "Vêtements",
+        image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"
+      }
+    ];
+
+    let products = JSON.parse(localStorage.getItem('mo_products')) || defaultProducts;
+    let selectedPrice = 4900;
+    let currentLang = 'fr';
+
+    function renderProducts() {
+      const container = document.getElementById('productsList');
+      const adminContainer = document.getElementById('adminProductsList');
+      container.innerHTML = '';
+      adminContainer.innerHTML = '';
+
+      if (products.length > 0) {
+        document.getElementById('selectedItem').value = products[0].nom;
+        selectedPrice = products[0].prix;
+      }
+
+      products.forEach((p, idx) => {
+        container.innerHTML += `
+          <div class="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col justify-between">
+            <div class="h-72 bg-stone-100 overflow-hidden relative">
+              <img src="${p.image}" alt="${p.nom}" class="h-full w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80'" />
+              <span class="absolute top-4 right-4 bg-amber-800 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">M&O</span>
+            </div>
+            <div class="p-5 flex-grow flex flex-col justify-between">
+              <div>
+                <span class="text-[11px] font-semibold uppercase text-amber-700">${p.cat}</span>
+                <h4 class="brand-font font-bold text-stone-900 text-lg mt-1">${p.nom}</h4>
+              </div>
+              <div class="mt-5 flex items-center justify-between pt-3 border-t border-stone-100">
+                <p class="text-lg font-extrabold text-stone-900">${p.prix.toLocaleString()} DZD</p>
+                <button onclick="selectProduct('${p.nom}', ${p.prix})" class="bg-stone-900 hover:bg-stone-800 text-white text-xs px-4 py-2 rounded-xl font-medium shadow">
+                  Commander
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+
+        adminContainer.innerHTML += `
+          <div class="flex items-center justify-between p-2.5 bg-stone-50 border rounded-xl text-xs">
+            <div class="flex items-center gap-2">
+              <img src="${p.image}" class="w-8 h-8 rounded object-cover" />
+              <div>
+                <p class="font-bold text-stone-800">${p.nom}</p>
+                <p class="text-stone-500">${p.prix} DZD</p>
+              </div>
+            </div>
+            <button onclick="deleteProduct(${idx})" class="text-rose-600 hover:text-rose-800 font-bold px-2 py-1">حذف ✕</button>
+          </div>
+        `;
+      });
+
+      updateDeliveryFee();
+    }
+
+    function selectProduct(name, price) {
+      document.getElementById('selectedItem').value = name;
+      selectedPrice = price;
+      updateDeliveryFee();
+      document.getElementById('commande-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateDeliveryFee() {
+      const select = document.getElementById('wilayaSelect');
+      const selectedOption = select.options[select.selectedIndex];
+      const isHome = document.querySelector('input[name="deliveryType"]:checked').value === 'home';
+      const fee = parseInt(isHome ? selectedOption.getAttribute('data-fee-home') : selectedOption.getAttribute('data-fee-desk'));
+      const total = selectedPrice + fee;
+
+      document.getElementById('sumItemPrice').textContent = selectedPrice.toLocaleString() + ' DZD';
+      document.getElementById('sumShipping').textContent = fee.toLocaleString() + ' DZD';
+      document.getElementById('sumTotal').textContent = total.toLocaleString() + ' DZD';
+    }
+
+    function handleOrder(e) {
+      e.preventDefault();
+      const name = document.getElementById('custName').value;
+      const phone = document.getElementById('custPhone').value;
+      const item = document.getElementById('selectedItem').value;
+      const select = document.getElementById('wilayaSelect');
+      const wilayaName = select.options[select.selectedIndex].text;
+      const isHome = document.querySelector('input[name="deliveryType"]:checked').value === 'home';
+      const typeStr = isHome ? "A domicile" : "Stopdesk";
+      const total = document.getElementById('sumTotal').textContent;
+
+      document.getElementById('orderSuccess').classList.remove('hidden');
+      document.getElementById('orderForm').classList.add('hidden');
+
+      const waMsg = encodeURIComponent("Bonjour M&O Elegance, nouvelle commande pour : " + item + " (" + total + "). Nom: " + name + " | Tel: " + phone + " | Wilaya: " + wilayaName + " (" + typeStr + ")");
+      document.getElementById('waLink').href = "https://wa.me/213555000000?text=" + waMsg;
+    }
+
+    function openAdmin() {
+      const pass = prompt("أدخلي كلمة السر للوصول إلى لوحة التحكم (Mot de passe) :");
+      if (pass === "1234") {
+        document.getElementById('adminModal').classList.remove('hidden');
+      } else if (pass !== null) {
+        alert("كلمة السر خاطئة!");
+      }
+    }
+
+    function closeAdmin() {
+      document.getElementById('adminModal').classList.add('hidden');
+    }
+
+    function addNewProduct() {
+      const nom = document.getElementById('newProdName').value;
+      const prix = parseInt(document.getElementById('newProdPrice').value);
+      const cat = document.getElementById('newProdCat').value || "Vêtements";
+      const image = document.getElementById('newProdImg').value || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80";
+
+      if (!nom || !prix) {
+        alert("يرجى إدخال اسم المنتج وسعره!");
+        return;
+      }
+
+      products.push({ id: Date.now(), nom, prix, cat, image });
+      localStorage.setItem('mo_products', JSON.stringify(products));
+      renderProducts();
+
+      document.getElementById('newProdName').value = '';
+      document.getElementById('newProdPrice').value = '';
+      document.getElementById('newProdCat').value = '';
+      document.getElementById('newProdImg').value = '';
+      closeAdmin();
+      alert("تمت إضافة المنتج بنجاح إلى المتجر!");
+    }
+
+    function deleteProduct(index) {
+      if (confirm("هل أنتِ متأكدة من حذف هذا المنتج؟")) {
+        products.splice(index, 1);
+        localStorage.setItem('mo_products', JSON.stringify(products));
+        renderProducts();
+      }
+    }
+
+    function toggleLanguage() {
+      if (currentLang === 'fr') {
+        currentLang = 'ar';
+        document.documentElement.setAttribute('dir', 'rtl');
+        document.getElementById('langBtn').textContent = 'Français';
+      } else {
+        currentLang = 'fr';
+        document.documentElement.setAttribute('dir', 'ltr');
+        document.getElementById('langBtn').textContent = 'العربية';
+      }
+    }
+
+    renderProducts();
+  </script>
+</body>
+</html>
