@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+
+      <!DOCTYPE html>
 <html lang="fr" dir="ltr">
 <head>
   <meta charset="UTF-8" />
@@ -233,12 +234,13 @@
         </button>
       </form>
 
-      <div id="orderSuccess" class="hidden mt-6 bg-stone-100 border border-stone-300 text-stone-900 p-5 rounded-2xl text-center">
-        <h4 class="font-bold text-sm">Commande validée avec succès !</h4>
-        <p class="text-xs text-stone-600 mt-1">Merci pour votre confiance. Vous pouvez aussi confirmer immédiatement sur WhatsApp :</p>
-        <a id="waLink" href="#" target="_blank" class="mt-4 inline-block bg-emerald-600 text-white text-xs px-5 py-2.5 rounded-xl font-bold shadow hover:bg-emerald-700">
-          Envoyer la commande sur WhatsApp
-        </a>
+      <!-- رسالة النجاح الجديدة والأنيقة بدون واتساب -->
+      <div id="orderSuccess" class="hidden mt-6 bg-stone-900 text-white p-6 rounded-2xl text-center shadow-md">
+        <div class="w-12 h-12 bg-white/10 rounded-full flex items-center justify-center mx-auto mb-3 text-emerald-400 text-2xl font-bold">✓</div>
+        <h4 class="font-bold text-base brand-font">Commande enregistrée avec succès !</h4>
+        <p class="text-xs text-stone-300 mt-2 leading-relaxed">
+          Merci pour votre commande. Notre équipe vous contactera par téléphone pour confirmer la livraison.
+        </p>
       </div>
     </div>
   </main>
@@ -425,7 +427,7 @@
     let currentFilter = 'all';
     let uploadedImagesList = [];
 
-    // مزامنة حية وفورية للمنتجات من Firebase
+    // مزامنة المنتجات من Firebase
     db.collection("products").orderBy("createdAt", "desc").onSnapshot((snapshot) => {
       products = [];
       snapshot.forEach((doc) => {
@@ -439,7 +441,7 @@
       console.error("Erreur Firestore produits:", error);
     });
 
-    // مزامنة حية وفورية للطلبات من Firebase
+    // مزامنة الطلبات من Firebase
     db.collection("orders").orderBy("timestamp", "desc").onSnapshot((snapshot) => {
       orders = [];
       snapshot.forEach((doc) => {
@@ -679,7 +681,7 @@
       btn.textContent = "Enregistrement en cours...";
       btn.disabled = true;
 
-      // 1. تسجيل الطلب في Firebase السحابية
+      // 1. تسجيل الطلب في Firebase
       try {
         await db.collection("orders").add({
           timestamp: Date.now(),
@@ -690,13 +692,13 @@
         console.error("Erreur sauvegarde Firestore:", err);
       }
 
-      // 2. إرسال إشعار فوري إلى الإيميل
+      // 2. إرسال إشعار فوري إلى بريد الجيميل عبر Formspree
       try {
         await fetch("https://formspree.io/f/xvgzvjqv", {
           method: "POST",
           headers: { "Content-Type": "application/json", "Accept": "application/json" },
           body: JSON.stringify({
-            _subject: `Nouvelle commande: ${item} (${name})`,
+            _subject: `🛍️ Nouvelle commande : ${item} (${name})`,
             Client: name,
             Telephone: phone,
             Article: item,
@@ -710,25 +712,12 @@
           })
         });
       } catch (err) {
-        console.log("Notification Formspree passée");
+        console.log("Erreur envoi notification");
       }
 
-      document.getElementById('orderSuccess').classList.remove('hidden');
+      // 3. إظهار رسالة النجاح وإخفاء الفورم
       document.getElementById('orderForm').classList.add('hidden');
-
-      const waMsg = encodeURIComponent(
-        `Bonjour M&O Elegance, nouvelle commande :\n` +
-        `- Modèle : ${item}\n` +
-        `- Taille : ${size}\n` +
-        `- Couleur : ${color}\n` +
-        `- Total : ${total}\n` +
-        `- Nom : ${name}\n` +
-        `- Téléphone : ${phone}\n` +
-        `- Wilaya : ${wilayaName}\n` +
-        `- Commune : ${commune}\n` +
-        `- Adresse : ${address} (${typeStr})`
-      );
-      document.getElementById('waLink').href = "https://wa.me/213555000000?text=" + waMsg;
+      document.getElementById('orderSuccess').classList.remove('hidden');
     }
 
     function openAdmin() {
