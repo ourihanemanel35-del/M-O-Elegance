@@ -15,7 +15,7 @@
 </head>
 <body class="text-stone-900 antialiased min-h-screen flex flex-col justify-between">
 
-  <!-- Header élégant -->
+  <!-- Header -->
   <header class="bg-white/95 backdrop-blur sticky top-0 z-40 border-b border-stone-200 shadow-sm">
     <div class="max-w-6xl mx-auto px-4 py-3.5 flex items-center justify-between">
       <div class="flex items-center gap-3">
@@ -34,14 +34,14 @@
     </div>
   </header>
 
-  <!-- Bandeau Avantages (comme Leenach) -->
+  <!-- Bandeau Avantages -->
   <div class="bg-stone-900 text-stone-100 text-[11px] py-2 px-4 border-b border-stone-800">
     <div class="max-w-6xl mx-auto flex flex-wrap items-center justify-around gap-2 text-center">
       <span>🚚 Livraison rapide 58 Wilayas</span>
       <span class="hidden sm:inline">•</span>
       <span>✨ Tissu & Finition de Qualité Supérieure</span>
       <span class="hidden sm:inline">•</span>
-      <span>📦 Paiement sécurisé à la livraison</span>
+      <span>📦 Paiement à la livraison (Cash on Delivery)</span>
     </div>
   </div>
 
@@ -69,12 +69,20 @@
     <!-- Grille des produits -->
     <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6" id="productsList"></div>
 
-    <!-- Formulaire de Commande COD Express -->
+    <!-- Formulaire de Commande Express -->
     <div id="commande-section" class="mt-14 max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-stone-200">
       <div class="text-center mb-6">
         <span class="text-amber-800 text-[10px] font-bold tracking-widest uppercase">Commander</span>
         <h3 class="brand-font text-xl font-bold text-stone-900 mt-1" id="txt-form-title">Finaliser votre commande</h3>
         <p class="text-xs text-stone-500 mt-1">Remplissez vos coordonnées, paiement à la réception</p>
+      </div>
+
+      <!-- Galerie photos du modèle sélectionné -->
+      <div id="selectedProductGallery" class="mb-5 space-y-2">
+        <div class="h-64 sm:h-80 w-full rounded-xl overflow-hidden bg-stone-100 border border-stone-200">
+          <img id="mainOrderImg" src="" alt="Modèle" class="w-full h-full object-cover" />
+        </div>
+        <div id="thumbnailsContainer" class="flex gap-2 overflow-x-auto pb-1"></div>
       </div>
 
       <form id="orderForm" onsubmit="handleOrder(event)" class="space-y-4">
@@ -99,7 +107,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-stone-700 mb-1">Nom et Prénom *</label>
-            <input type="text" id="custName" required placeholder="Votre nom" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-stone-900 outline-none" />
+            <input type="text" id="custName" required placeholder="Votre nom complet" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-stone-900 outline-none" />
           </div>
           <div>
             <label class="block text-xs font-semibold text-stone-700 mb-1">Numéro de téléphone *</label>
@@ -110,7 +118,7 @@
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
           <div>
             <label class="block text-xs font-semibold text-stone-700 mb-1">Wilaya *</label>
-            <select id="wilayaSelect" onchange="updateDeliveryFee()" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-stone-900 outline-none">
+            <select id="wilayaSelect" onchange="onWilayaChange()" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-stone-900 outline-none">
               <option value="1" data-fee-home="1450" data-fee-desk="1070">01 - Adrar (أدرار)</option>
               <option value="2" data-fee-home="850" data-fee-desk="570">02 - Chlef (الشلف)</option>
               <option value="3" data-fee-home="950" data-fee-desk="670">03 - Laghouat (الأغواط)</option>
@@ -168,8 +176,10 @@
             </select>
           </div>
           <div>
-            <label class="block text-xs font-semibold text-stone-700 mb-1">Commune *</label>
-            <input type="text" id="custCommune" required placeholder="Votre commune" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-stone-900 outline-none" />
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Commune (البلدية) *</label>
+            <select id="custCommune" required class="w-full border border-stone-300 rounded-lg px-3 py-2 text-xs focus:ring-1 focus:ring-stone-900 outline-none bg-white">
+              <option value="">Sélectionnez d'abord votre wilaya</option>
+            </select>
           </div>
         </div>
 
@@ -193,10 +203,10 @@
           </div>
         </div>
 
-        <!-- Récapitulatif du Total -->
+        <!-- Récapitulatif Total -->
         <div class="bg-stone-50 p-4 rounded-xl border border-stone-200 space-y-1 text-xs text-stone-600">
           <div class="flex justify-between">
-            <span>Prix de l'article :</span>
+            <span>Prix du modèle :</span>
             <span id="sumItemPrice" class="font-semibold text-stone-900">4 700 DZD</span>
           </div>
           <div class="flex justify-between">
@@ -224,7 +234,7 @@
     </div>
   </main>
 
-  <!-- Modal Admin avec Galerie Photo, Tailles & Couleurs -->
+  <!-- Modal Admin avec Galerie Multi-Photos -->
   <div id="adminModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center pb-4 border-b">
@@ -281,15 +291,16 @@
           <!-- Couleurs -->
           <div>
             <label class="block text-[11px] font-semibold text-stone-600 mb-1">Couleurs disponibles (séparées par des virgules)</label>
-            <input type="text" id="newProdColors" placeholder="Ex: Noir, Beige, Vert d'eau, Marron" class="w-full border p-2 text-xs rounded-lg bg-white" />
+            <input type="text" id="newProdColors" placeholder="Ex: Noir, Beige, Vert émeraude, Marron..." class="w-full border p-2 text-xs rounded-lg bg-white" />
           </div>
 
-          <!-- Galerie Photo du téléphone -->
+          <!-- Galerie Multi-Photos -->
           <div>
-            <label class="block text-[11px] font-semibold text-stone-700 mb-1">Photo depuis votre téléphone (Galerie)</label>
-            <input type="file" id="newProdFile" accept="image/*" class="w-full text-xs text-stone-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-stone-200 file:text-stone-800 hover:file:bg-stone-300" />
-            <div id="imagePreviewContainer" class="mt-2 hidden">
-              <img id="imagePreview" src="" alt="Aperçu" class="h-24 w-24 object-cover rounded-xl border border-stone-300" />
+            <label class="block text-[11px] font-semibold text-stone-700 mb-1">Photos depuis la galerie (vous pouvez en choisir plusieurs) :</label>
+            <input type="file" id="newProdFiles" accept="image/*" multiple class="w-full text-xs text-stone-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-stone-200 file:text-stone-800 hover:file:bg-stone-300" />
+            <div id="imagePreviewContainer" class="mt-2.5 hidden">
+              <p class="text-[10px] text-stone-500 mb-1">Aperçu des photos sélectionnées :</p>
+              <div id="previewThumbnails" class="flex flex-wrap gap-2"></div>
             </div>
           </div>
 
@@ -316,6 +327,63 @@
   </footer>
 
   <script>
+    // Dictionnaire des communes principales par wilaya
+    const algeriaCommunes = {
+      "1": ["Adrar", "Tamest", "Charouine", "Reggane", "In Zghmir", "Tit", "Zaouiet Kounta", "Aoulef", "Timokten", "Fenoughil"],
+      "2": ["Chlef", "Ténès", "Boukadir", "Oued Fodda", "El Karimia", "Taougrite", "Beni Haoua", "Sobha", "Zeboudja", "Abou El Hassan"],
+      "3": ["Laghouat", "Aflou", "Ksar El Hirane", "Ain Madhi", "Sidi Makhlouf", "Hassi Delaa", "Brida", "El Ghicha"],
+      "4": ["Oum El Bouaghi", "Ain Beida", "Ain M'lila", "Ain Fakroun", "Meskiana", "Sigus", "Ain Kercha", "Fkirina"],
+      "5": ["Batna", "Barika", "Ain Touta", "Arris", "Merouana", "Tazoult", "N'Gaous", "Seriana", "Menaa", "Ras El Aioun"],
+      "6": ["Béjaïa", "Akbou", "Amizour", "Seddouk", "El Kseur", "Aokas", "Tichy", "Sidi Aïch", "Souk El Ténine", "Adekar"],
+      "7": ["Biskra", "Tolga", "Sidi Okba", "Ouled Djellal", "Zeribet El Oued", "El Kantara", "M'Chouneche", "Foughala"],
+      "8": ["Béchar", "Kenadsa", "Abadla", "Beni Ounif", "Taghit", "Tabelbala", "Lahmar", "Erg Ferradj"],
+      "9": ["Blida", "Boufarik", "Ouled Yaich", "El Affroun", "Larbaa", "Mouzaia", "Meftah", "Bouinan", "Oued Alleug", "Bougara", "Soumaa"],
+      "10": ["Bouira", "Lakhdaria", "Sour El Ghozlane", "Ain Bessem", "M'Chedallah", "Kadiria", "Bechloul", "Haizer"],
+      "11": ["Tamanrasset", "Abalessa", "In Amguel", "Tazrouk", "Idles"],
+      "12": ["Tébessa", "Cheria", "El Aouinet", "Bir El Ater", "Ouenza", "El Kouif", "Morsott", "Negrine"],
+      "13": ["Tlemcen", "Mansourah", "Chetouane", "Maghnia", "Remchi", "Ghazaouet", "Nedroma", "Sebdou", "Hennaya", "Beni Saf"],
+      "14": ["Tiaret", "Sougueur", "Frenda", "Ksar Chellala", "Mahdia", "Rahouia", "Mechraa Sfa", "Dahmouni"],
+      "15": ["Tizi Ouzou", "Azazga", "Draa El Mizan", "Tigzirt", "Boghni", "Larbaa Nath Irathen", "Ain El Hammam", "Ouadhia", "Azeffoun", "Bouzeguene"],
+      "16": ["Alger Centre", "Sidi M'Hamed", "Bab El Oued", "Hydra", "Ben Aknoun", "El Biar", "Kouba", "Bir Mourad Rais", "Hussein Dey", "Bouzareah", "Bordj El Kiffan", "Bab Ezzouar", "Dar El Beida", "El Harrach", "Cheraga", "Dely Ibrahim", "Ain Benian", "Zeralda", "Staoueli", "Rouiba", "Reghaia", "Baraki", "Birtouta", "Saoula"],
+      "17": ["Djelfa", "Ain Oussera", "Messaad", "Hassi Bahbah", "Dar Chioukh", "Charef", "El Idrissia", "Birine"],
+      "18": ["Jijel", "Taher", "El Milia", "El Ancer", "Sidi Abdelaziz", "Chekfa", "Ziama Mansouriah", "Texenna"],
+      "20": ["Saïda", "Ain El Hadjar", "Youb", "Sidi Boubekeur", "El Hassasna", "Ouled Brahim"],
+      "21": ["Skikda", "El Harrouch", "Collo", "Azzaba", "Tamalous", "Ben Azzouz", "Ramdane Djamel", "Ain Kechra"],
+      "22": ["Sidi Bel Abbès", "Telagh", "Sidi Ali Boussidi", "Ben Badis", "Sfisef", "Marhoum", "Ras El Ma"],
+      "23": ["Annaba", "El Bouni", "El Hadjar", "Berrahal", "Seraidi", "Ain El Berda", "Cheurfa"],
+      "24": ["Guelma", "Oued Zenati", "Bouchegouf", "Héliopolis", "Guelaat Bou Sbaa", "Ain Makhlouf", "Hammam Debagh"],
+      "25": ["Constantine", "El Khroub", "Hamma Bouziane", "Didouche Mourad", "Zighoud Youcef", "Ain Smara", "Ibn Ziad"],
+      "26": ["Médéa", "Berrouaghia", "Ksar El Boukhari", "Beni Slimane", "Tablat", "Ouzera", "Ain Boucif", "Seghouane"],
+      "27": ["Mostaganem", "Ain Tedeles", "Sidi Ali", "Hassi Mameche", "Bouguirat", "Achaacha", "Mesra", "Khadra"],
+      "28": ["M'Sila", "Bou Saada", "Sidi Aissa", "Ain El Melh", "Magra", "Berhoum", "Hammam Dalaa", "Ouled Derradj"],
+      "29": ["Mascara", "Sig", "Mohammadia", "Tighennif", "Ghriss", "Oued El Abtal", "Aouf", "Zahana"],
+      "30": ["Ouargla", "Hassi Messaoud", "Rouissat", "Ain Beida", "Sidi Khouiled", "N'Goussa", "El Hadjira"],
+      "31": ["Oran", "Bir El Djir", "Es Senia", "Arzew", "Ain El Turk", "Bethioua", "Gdyel", "Boutlelis", "Mers El Kébir", "Oued Tlelat"],
+      "32": ["El Bayadh", "Rogassa", "Brezina", "Bougtob", "El Abiodh Sidi Cheikh", "Labiodh Sidi Cheikh"],
+      "34": ["Bordj Bou Arreridj", "Ras El Oued", "Bordj Zemoura", "Mansoura", "El Achir", "Ain Taghrout", "Bir Kasdali"],
+      "35": ["Boumerdès", "Zemmouri", "Thénia", "Dellys", "Bordj Menaiel", "Khemis El Khechna", "Ouled Moussa", "Larbatache", "Isser", "Si Mustapha", "Tidjelabine", "Corso", "Baghlia", "Naciria", "Boudouaou", "Hammadi"],
+      "36": ["El Tarf", "El Kala", "Ben M'Hidi", "Bouhadjar", "Drean", "Besbes", "Berrihane"],
+      "38": ["Tissemsilt", "Theniet El Had", "Bordj Bou Naama", "Lardjem", "Khemisti", "Ammari"],
+      "39": ["El Oued", "Guemar", "Debila", "Robbah", "Magrane", "Hassi Khelifa", "Taleb Larbi", "Bayadha"],
+      "40": ["Khenchela", "Kais", "Chechar", "Bouhmama", "El Hamma", "Babar", "Ouled Rechache"],
+      "41": ["Souk Ahras", "Sedrata", "M'Daourouch", "Taoura", "Merahna", "Heddada", "Ouled Driss"],
+      "42": ["Tipaza", "Cherchell", "Kolea", "Hadjeret Ennous", "Gouraya", "Fouka", "Bou Ismail", "Damous", "Ahmar El Ain", "Sidi Amar", "Chaiba"],
+      "43": ["Mila", "Chelghoum Laid", "Tadjenanet", "Ferdjioua", "Grarem Gouga", "Teleghma", "Rouached"],
+      "44": ["Aïn Defla", "Khemis Miliana", "Miliana", "El Attaf", "Djelida", "Al Amra", "Hammam Righa", "Boumedfaa"],
+      "45": ["Naâma", "Mecheria", "Ain Sefra", "Tiout", "Sfissifa", "Moghrar", "Asla"],
+      "46": ["Aïn Témouchent", "Beni Saf", "Hammam Bou Hadjar", "El Malah", "Ain Kihal", "Oulhaca El Gheraba"],
+      "47": ["Ghardaïa", "El Guerara", "Metlili", "Bounoura", "Dhayet Bendhahoua", "Berriane", "Zelfana"],
+      "48": ["Relizane", "Oued Rhiou", "Mazouna", "Zemmoura", "Yellel", "Djidioua", "Ammi Moussa"],
+      "49": ["Timimoun", "Aougrout", "Deldoul", "Ksar Kaddour", "Tinerkouk"],
+      "51": ["Ouled Djellal", "Sidi Khaled", "Ras El Miad", "Besbes", "Doucen"],
+      "52": ["Béni Abbès", "Kerzaz", "El Ouata", "Tabelbala", "Timoudi"],
+      "53": ["In Salah", "In Ghar", "Foggaret Ezzaouia"],
+      "54": ["In Guezzam", "Tin Zaouatine"],
+      "55": ["Touggourt", "Temacine", "Megarine", "Taibet", "El Hadjira", "Nezla"],
+      "57": ["El M'Ghair", "Djamaa", "Oum Touyour", "Sidi Amrane"],
+      "58": ["El Menia", "Hassi Gara", "Hassi Fehal"]
+    };
+
     let defaultProducts = [
       {
         id: 1,
@@ -325,25 +393,38 @@
         cat: "Robes",
         sizes: ["38", "40", "42", "44"],
         colors: ["Noir", "Beige", "Vert émeraude"],
-        image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"
+        images: [
+          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80",
+          "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=700&q=80"
+        ]
       }
     ];
 
     let products = JSON.parse(localStorage.getItem('mo_products')) || defaultProducts;
     let selectedProduct = products[0] || null;
     let currentFilter = 'all';
-    let base64Image = '';
+    let uploadedImagesList = [];
 
-    document.getElementById('newProdFile').addEventListener('change', function(e) {
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function(event) {
-          base64Image = event.target.result;
-          document.getElementById('imagePreview').src = base64Image;
-          document.getElementById('imagePreviewContainer').classList.remove('hidden');
-        };
-        reader.readAsDataURL(file);
+    // Gestion du téléchargement multi-images
+    document.getElementById('newProdFiles').addEventListener('change', function(e) {
+      const files = e.target.files;
+      uploadedImagesList = [];
+      const previewThumbnails = document.getElementById('previewThumbnails');
+      previewThumbnails.innerHTML = '';
+
+      if (files.length > 0) {
+        document.getElementById('imagePreviewContainer').classList.remove('hidden');
+        Array.from(files).forEach(file => {
+          const reader = new FileReader();
+          reader.onload = function(evt) {
+            uploadedImagesList.push(evt.target.result);
+            const img = document.createElement('img');
+            img.src = evt.target.result;
+            img.className = 'w-14 h-14 object-cover rounded-lg border border-stone-300';
+            previewThumbnails.appendChild(img);
+          };
+          reader.readAsDataURL(file);
+        });
       }
     });
 
@@ -370,14 +451,17 @@
 
       filtered.forEach((p) => {
         const idx = products.indexOf(p);
+        const mainImg = (p.images && p.images.length) ? p.images[0] : (p.image || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80");
+        const countBadge = (p.images && p.images.length > 1) ? `<span class="absolute bottom-2 right-2 bg-stone-900/80 backdrop-blur text-white text-[9px] px-2 py-0.5 rounded-full font-bold">📷 ${p.images.length} photos</span>` : '';
         const oldPriceHtml = p.oldPrix ? `<span class="text-xs text-stone-400 line-through mr-1">${p.oldPrix.toLocaleString()} DA</span>` : '';
         const badgeDiscount = p.oldPrix ? `<span class="absolute top-2 left-2 bg-rose-600 text-white text-[9px] font-bold px-2 py-0.5 rounded-full uppercase">Promo</span>` : '';
 
         container.innerHTML += `
           <div class="bg-white rounded-xl shadow-sm border border-stone-200 overflow-hidden flex flex-col justify-between group hover:shadow-md transition">
-            <div class="h-64 sm:h-72 bg-stone-100 overflow-hidden relative">
-              <img src="${p.image}" alt="${p.nom}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300" />
+            <div class="h-64 sm:h-72 bg-stone-100 overflow-hidden relative cursor-pointer" onclick="selectProductByIndex(${idx})">
+              <img src="${mainImg}" alt="${p.nom}" class="h-full w-full object-cover group-hover:scale-105 transition duration-300" />
               ${badgeDiscount}
+              ${countBadge}
             </div>
             <div class="p-3.5 flex-grow flex flex-col justify-between">
               <div>
@@ -397,13 +481,14 @@
       });
 
       products.forEach((p, idx) => {
+        const thumb = (p.images && p.images.length) ? p.images[0] : (p.image || "");
         adminContainer.innerHTML += `
           <div class="flex items-center justify-between p-2.5 bg-stone-50 border rounded-xl text-xs">
             <div class="flex items-center gap-2">
-              <img src="${p.image}" class="w-10 h-10 rounded-lg object-cover" />
+              <img src="${thumb}" class="w-10 h-10 rounded-lg object-cover" />
               <div>
                 <p class="font-bold text-stone-900">${p.nom}</p>
-                <p class="text-stone-500">${p.prix} DZD</p>
+                <p class="text-stone-500">${p.prix} DZD (${(p.images || [p.image]).length} photo(s))</p>
               </div>
             </div>
             <button onclick="deleteProduct(${idx})" class="text-rose-600 hover:text-rose-800 font-bold px-2 py-1">Supprimer ✕</button>
@@ -412,7 +497,7 @@
       });
 
       if (selectedProduct) {
-        updateOrderVariants();
+        updateOrderProductView();
       }
       updateDeliveryFee();
     }
@@ -420,12 +505,12 @@
     function selectProductByIndex(idx) {
       selectedProduct = products[idx];
       document.getElementById('selectedItem').value = selectedProduct.nom;
-      updateOrderVariants();
+      updateOrderProductView();
       updateDeliveryFee();
       document.getElementById('commande-section').scrollIntoView({ behavior: 'smooth' });
     }
 
-    function updateOrderVariants() {
+    function updateOrderProductView() {
       if (!selectedProduct) return;
       const sizeSelect = document.getElementById('selectedSize');
       const colorSelect = document.getElementById('selectedColor');
@@ -437,6 +522,37 @@
       colorSelect.innerHTML = (selectedProduct.colors && selectedProduct.colors.length)
         ? selectedProduct.colors.map(c => `<option value="${c}">${c}</option>`).join('')
         : '<option value="Unique">Couleur unique</option>';
+
+      // Affichage de la galerie multi-photos
+      const imgs = (selectedProduct.images && selectedProduct.images.length) 
+        ? selectedProduct.images 
+        : [selectedProduct.image || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"];
+
+      const mainImg = document.getElementById('mainOrderImg');
+      const thumbsContainer = document.getElementById('thumbnailsContainer');
+      mainImg.src = imgs[0];
+      thumbsContainer.innerHTML = '';
+
+      if (imgs.length > 1) {
+        imgs.forEach((src) => {
+          const thumb = document.createElement('img');
+          thumb.src = src;
+          thumb.className = 'w-14 h-14 object-cover rounded-lg border-2 border-transparent cursor-pointer hover:border-stone-900 transition flex-shrink-0';
+          thumb.onclick = () => { mainImg.src = src; };
+          thumbsContainer.appendChild(thumb);
+        });
+      }
+    }
+
+    // Gestion automatique des communes par wilaya
+    function onWilayaChange() {
+      const select = document.getElementById('wilayaSelect');
+      const wilayaId = select.value;
+      const communeSelect = document.getElementById('custCommune');
+      const list = algeriaCommunes[wilayaId] || ["Centre-ville (Centre)", "Autre commune"];
+
+      communeSelect.innerHTML = list.map(c => `<option value="${c}">${c}</option>`).join('');
+      updateDeliveryFee();
     }
 
     function updateDeliveryFee() {
@@ -461,6 +577,8 @@
       const color = document.getElementById('selectedColor').value;
       const select = document.getElementById('wilayaSelect');
       const wilayaName = select.options[select.selectedIndex].text;
+      const commune = document.getElementById('custCommune').value;
+      const address = document.getElementById('custAddress').value;
       const isHome = document.querySelector('input[name="deliveryType"]:checked').value === 'home';
       const typeStr = isHome ? "A domicile" : "Stopdesk";
       const total = document.getElementById('sumTotal').textContent;
@@ -476,7 +594,9 @@
         `- Total : ${total}\n` +
         `- Nom : ${name}\n` +
         `- Téléphone : ${phone}\n` +
-        `- Wilaya : ${wilayaName} (${typeStr})`
+        `- Wilaya : ${wilayaName}\n` +
+        `- Commune : ${commune}\n` +
+        `- Adresse : ${address} (${typeStr})`
       );
       document.getElementById('waLink').href = "https://wa.me/213555000000?text=" + waMsg;
     }
@@ -513,23 +633,25 @@
 
       const sizes = checkedSizes.length ? checkedSizes : ["Standard"];
       const colors = colorsRaw ? colorsRaw.split(',').map(c => c.trim()).filter(Boolean) : ["Unique"];
-      const image = base64Image || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80";
+      const images = (uploadedImagesList.length > 0) 
+        ? uploadedImagesList 
+        : ["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"];
 
-      products.push({ id: Date.now(), nom, prix, oldPrix, cat, sizes, colors, image });
+      products.push({ id: Date.now(), nom, prix, oldPrix, cat, sizes, colors, images });
       localStorage.setItem('mo_products', JSON.stringify(products));
       renderProducts();
 
-      // Reset
+      // Réinitialisation
       document.getElementById('newProdName').value = '';
       document.getElementById('newProdPrice').value = '';
       document.getElementById('newProdOldPrice').value = '';
       document.getElementById('newProdColors').value = '';
-      document.getElementById('newProdFile').value = '';
-      base64Image = '';
+      document.getElementById('newProdFiles').value = '';
+      uploadedImagesList = [];
       document.getElementById('imagePreviewContainer').classList.add('hidden');
 
       closeAdmin();
-      alert("Le nouveau modèle a été ajouté avec succès !");
+      alert("Le modèle avec sa galerie photo et ses options a été ajouté !");
     }
 
     function deleteProduct(index) {
@@ -547,6 +669,8 @@
       document.getElementById('langBtn').textContent = isFr ? 'Français' : 'العربية';
     }
 
+    // Initialisation
+    onWilayaChange();
     renderProducts();
   </script>
 </body>
