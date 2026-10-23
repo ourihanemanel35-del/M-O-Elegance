@@ -234,7 +234,7 @@
     </div>
   </main>
 
-  <!-- Modal Admin avec Galerie Multi-Photos -->
+  <!-- Modal Admin avec Optimisation Automatique des Photos -->
   <div id="adminModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center pb-4 border-b">
@@ -247,13 +247,13 @@
         <div class="space-y-3">
           <div>
             <label class="block text-[11px] font-semibold text-stone-600 mb-1">Nom du modèle</label>
-            <input type="text" id="newProdName" placeholder="Ex: Robe Sama" class="w-full border p-2 text-xs rounded-lg bg-white" />
+            <input type="text" id="newProdName" placeholder="Ex: Robe Mira" class="w-full border p-2 text-xs rounded-lg bg-white" />
           </div>
 
           <div class="grid grid-cols-2 gap-2">
             <div>
               <label class="block text-[11px] font-semibold text-stone-600 mb-1">Prix (DZD)</label>
-              <input type="number" id="newProdPrice" placeholder="Ex: 4700" class="w-full border p-2 text-xs rounded-lg bg-white" />
+              <input type="number" id="newProdPrice" placeholder="Ex: 4900" class="w-full border p-2 text-xs rounded-lg bg-white" />
             </div>
             <div>
               <label class="block text-[11px] font-semibold text-stone-600 mb-1">Ancien Prix barré (optionnel)</label>
@@ -291,20 +291,20 @@
           <!-- Couleurs -->
           <div>
             <label class="block text-[11px] font-semibold text-stone-600 mb-1">Couleurs disponibles (séparées par des virgules)</label>
-            <input type="text" id="newProdColors" placeholder="Ex: Noir, Beige, Vert émeraude, Marron..." class="w-full border p-2 text-xs rounded-lg bg-white" />
+            <input type="text" id="newProdColors" placeholder="Ex: Bordeaux, Noir, Beige..." class="w-full border p-2 text-xs rounded-lg bg-white" />
           </div>
 
-          <!-- Galerie Multi-Photos -->
+          <!-- Multi-Photos avec compression automatique -->
           <div>
-            <label class="block text-[11px] font-semibold text-stone-700 mb-1">Photos depuis la galerie (vous pouvez en choisir plusieurs) :</label>
+            <label class="block text-[11px] font-semibold text-stone-700 mb-1">Photos depuis la galerie :</label>
             <input type="file" id="newProdFiles" accept="image/*" multiple class="w-full text-xs text-stone-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-stone-200 file:text-stone-800 hover:file:bg-stone-300" />
             <div id="imagePreviewContainer" class="mt-2.5 hidden">
-              <p class="text-[10px] text-stone-500 mb-1">Aperçu des photos sélectionnées :</p>
+              <p class="text-[10px] text-stone-500 mb-1" id="compressStatus">Traitement des photos en cours...</p>
               <div id="previewThumbnails" class="flex flex-wrap gap-2"></div>
             </div>
           </div>
 
-          <button onclick="addNewProduct()" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-2.5 rounded-lg text-xs shadow mt-2">
+          <button id="submitProdBtn" onclick="addNewProduct()" class="w-full bg-stone-900 hover:bg-stone-800 text-white font-bold py-2.5 rounded-lg text-xs shadow mt-2">
             Ajouter immédiatement à la boutique
           </button>
         </div>
@@ -327,7 +327,6 @@
   </footer>
 
   <script>
-    // Dictionnaire des communes principales par wilaya
     const algeriaCommunes = {
       "1": ["Adrar", "Tamest", "Charouine", "Reggane", "In Zghmir", "Tit", "Zaouiet Kounta", "Aoulef", "Timokten", "Fenoughil"],
       "2": ["Chlef", "Ténès", "Boukadir", "Oued Fodda", "El Karimia", "Taougrite", "Beni Haoua", "Sobha", "Zeboudja", "Abou El Hassan"],
@@ -347,6 +346,7 @@
       "16": ["Alger Centre", "Sidi M'Hamed", "Bab El Oued", "Hydra", "Ben Aknoun", "El Biar", "Kouba", "Bir Mourad Rais", "Hussein Dey", "Bouzareah", "Bordj El Kiffan", "Bab Ezzouar", "Dar El Beida", "El Harrach", "Cheraga", "Dely Ibrahim", "Ain Benian", "Zeralda", "Staoueli", "Rouiba", "Reghaia", "Baraki", "Birtouta", "Saoula"],
       "17": ["Djelfa", "Ain Oussera", "Messaad", "Hassi Bahbah", "Dar Chioukh", "Charef", "El Idrissia", "Birine"],
       "18": ["Jijel", "Taher", "El Milia", "El Ancer", "Sidi Abdelaziz", "Chekfa", "Ziama Mansouriah", "Texenna"],
+      "19": ["Sétif", "El Eulma", "Ain Oulmene", "Ain Azel", "Bougaa", "Ain Arnat", "Amoucha", "Beni Aziz", "Djemila"],
       "20": ["Saïda", "Ain El Hadjar", "Youb", "Sidi Boubekeur", "El Hassasna", "Ouled Brahim"],
       "21": ["Skikda", "El Harrouch", "Collo", "Azzaba", "Tamalous", "Ben Azzouz", "Ramdane Djamel", "Ain Kechra"],
       "22": ["Sidi Bel Abbès", "Telagh", "Sidi Ali Boussidi", "Ben Badis", "Sfisef", "Marhoum", "Ras El Ma"],
@@ -359,7 +359,7 @@
       "29": ["Mascara", "Sig", "Mohammadia", "Tighennif", "Ghriss", "Oued El Abtal", "Aouf", "Zahana"],
       "30": ["Ouargla", "Hassi Messaoud", "Rouissat", "Ain Beida", "Sidi Khouiled", "N'Goussa", "El Hadjira"],
       "31": ["Oran", "Bir El Djir", "Es Senia", "Arzew", "Ain El Turk", "Bethioua", "Gdyel", "Boutlelis", "Mers El Kébir", "Oued Tlelat"],
-      "32": ["El Bayadh", "Rogassa", "Brezina", "Bougtob", "El Abiodh Sidi Cheikh", "Labiodh Sidi Cheikh"],
+      "32": ["El Bayadh", "Rogassa", "Brezina", "Bougtob", "El Abiodh Sidi Cheikh"],
       "34": ["Bordj Bou Arreridj", "Ras El Oued", "Bordj Zemoura", "Mansoura", "El Achir", "Ain Taghrout", "Bir Kasdali"],
       "35": ["Boumerdès", "Zemmouri", "Thénia", "Dellys", "Bordj Menaiel", "Khemis El Khechna", "Ouled Moussa", "Larbatache", "Isser", "Si Mustapha", "Tidjelabine", "Corso", "Baghlia", "Naciria", "Boudouaou", "Hammadi"],
       "36": ["El Tarf", "El Kala", "Ben M'Hidi", "Bouhadjar", "Drean", "Besbes", "Berrihane"],
@@ -394,8 +394,7 @@
         sizes: ["38", "40", "42", "44"],
         colors: ["Noir", "Beige", "Vert émeraude"],
         images: [
-          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80",
-          "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?auto=format&fit=crop&w=700&q=80"
+          "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"
         ]
       }
     ];
@@ -405,26 +404,70 @@
     let currentFilter = 'all';
     let uploadedImagesList = [];
 
-    // Gestion du téléchargement multi-images
-    document.getElementById('newProdFiles').addEventListener('change', function(e) {
-      const files = e.target.files;
+    // Fonction de compression d'image pour téléphone mobile
+    function compressImageFile(file) {
+      return new Promise((resolve) => {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = new Image();
+          img.onload = function() {
+            const canvas = document.createElement('canvas');
+            const maxDim = 800; // Résolution optimale pour mobile
+            let width = img.width;
+            let height = img.height;
+
+            if (width > height) {
+              if (width > maxDim) {
+                height = Math.round((height * maxDim) / width);
+                width = maxDim;
+              }
+            } else {
+              if (height > maxDim) {
+                width = Math.round((width * maxDim) / height);
+                height = maxDim;
+              }
+            }
+
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0, width, height);
+            // Compression en JPEG qualité web
+            resolve(canvas.toDataURL('image/jpeg', 0.65));
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // Gestion du téléchargement avec compression fluide
+    document.getElementById('newProdFiles').addEventListener('change', async function(e) {
+      const files = Array.from(e.target.files);
       uploadedImagesList = [];
       const previewThumbnails = document.getElementById('previewThumbnails');
+      const statusText = document.getElementById('compressStatus');
+      const submitBtn = document.getElementById('submitProdBtn');
       previewThumbnails.innerHTML = '';
 
       if (files.length > 0) {
         document.getElementById('imagePreviewContainer').classList.remove('hidden');
-        Array.from(files).forEach(file => {
-          const reader = new FileReader();
-          reader.onload = function(evt) {
-            uploadedImagesList.push(evt.target.result);
-            const img = document.createElement('img');
-            img.src = evt.target.result;
-            img.className = 'w-14 h-14 object-cover rounded-lg border border-stone-300';
-            previewThumbnails.appendChild(img);
-          };
-          reader.readAsDataURL(file);
-        });
+        statusText.textContent = "Optimisation des photos pour mobile...";
+        submitBtn.disabled = true;
+        submitBtn.classList.add('opacity-50');
+
+        for (const file of files) {
+          const compressed = await compressImageFile(file);
+          uploadedImagesList.push(compressed);
+          const img = document.createElement('img');
+          img.src = compressed;
+          img.className = 'w-14 h-14 object-cover rounded-lg border border-stone-300';
+          previewThumbnails.appendChild(img);
+        }
+
+        statusText.textContent = `${uploadedImagesList.length} photo(s) prête(s) !`;
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('opacity-50');
       }
     });
 
@@ -523,7 +566,6 @@
         ? selectedProduct.colors.map(c => `<option value="${c}">${c}</option>`).join('')
         : '<option value="Unique">Couleur unique</option>';
 
-      // Affichage de la galerie multi-photos
       const imgs = (selectedProduct.images && selectedProduct.images.length) 
         ? selectedProduct.images 
         : [selectedProduct.image || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"];
@@ -544,7 +586,6 @@
       }
     }
 
-    // Gestion automatique des communes par wilaya
     function onWilayaChange() {
       const select = document.getElementById('wilayaSelect');
       const wilayaId = select.value;
@@ -637,21 +678,25 @@
         ? uploadedImagesList 
         : ["https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"];
 
-      products.push({ id: Date.now(), nom, prix, oldPrix, cat, sizes, colors, images });
-      localStorage.setItem('mo_products', JSON.stringify(products));
-      renderProducts();
+      try {
+        products.push({ id: Date.now(), nom, prix, oldPrix, cat, sizes, colors, images });
+        localStorage.setItem('mo_products', JSON.stringify(products));
+        renderProducts();
 
-      // Réinitialisation
-      document.getElementById('newProdName').value = '';
-      document.getElementById('newProdPrice').value = '';
-      document.getElementById('newProdOldPrice').value = '';
-      document.getElementById('newProdColors').value = '';
-      document.getElementById('newProdFiles').value = '';
-      uploadedImagesList = [];
-      document.getElementById('imagePreviewContainer').classList.add('hidden');
+        // Réinitialisation des champs
+        document.getElementById('newProdName').value = '';
+        document.getElementById('newProdPrice').value = '';
+        document.getElementById('newProdOldPrice').value = '';
+        document.getElementById('newProdColors').value = '';
+        document.getElementById('newProdFiles').value = '';
+        uploadedImagesList = [];
+        document.getElementById('imagePreviewContainer').classList.add('hidden');
 
-      closeAdmin();
-      alert("Le modèle avec sa galerie photo et ses options a été ajouté !");
+        closeAdmin();
+        alert("Le modèle a été ajouté avec succès à la boutique !");
+      } catch (err) {
+        alert("Mémoire saturée ! Essayez de supprimer un ancien modèle ou de sélectionner moins de photos.");
+      }
     }
 
     function deleteProduct(index) {
@@ -669,7 +714,6 @@
       document.getElementById('langBtn').textContent = isFr ? 'Français' : 'العربية';
     }
 
-    // Initialisation
     onWilayaChange();
     renderProducts();
   </script>
