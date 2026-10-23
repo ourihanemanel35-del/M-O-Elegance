@@ -67,6 +67,18 @@
           <input type="text" id="selectedItem" value="" readonly class="w-full bg-stone-50 border border-stone-200 rounded-lg px-3 py-2 text-sm text-stone-800 font-bold" />
         </div>
 
+        <!-- Sélection Taille & Couleur -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Taille disponible *</label>
+            <select id="selectedSize" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-600 outline-none"></select>
+          </div>
+          <div>
+            <label class="block text-xs font-semibold text-stone-700 mb-1">Couleur au choix *</label>
+            <select id="selectedColor" class="w-full border border-stone-300 rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-600 outline-none"></select>
+          </div>
+        </div>
+
         <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
             <label class="block text-xs font-semibold text-stone-700 mb-1">Nom et Prénom *</label>
@@ -166,7 +178,7 @@
         <div class="bg-stone-50 p-4 rounded-xl border border-stone-100 space-y-1.5 text-xs text-stone-600">
           <div class="flex justify-between">
             <span>سعر المنتج :</span>
-            <span id="sumItemPrice" class="font-semibold text-stone-800">4 900 DZD</span>
+            <span id="sumItemPrice" class="font-semibold text-stone-800">4 700 DZD</span>
           </div>
           <div class="flex justify-between">
             <span>تكلفة التوصيل :</span>
@@ -174,7 +186,7 @@
           </div>
           <div class="flex justify-between pt-2 border-t border-stone-200 text-sm font-bold text-stone-900">
             <span>المجموع الإجمالي :</span>
-            <span id="sumTotal" class="text-amber-800 font-extrabold">5 400 DZD</span>
+            <span id="sumTotal" class="text-amber-800 font-extrabold">5 200 DZD</span>
           </div>
         </div>
 
@@ -193,7 +205,7 @@
     </div>
   </main>
 
-  <!-- Modal Admin -->
+  <!-- Modal Admin avec Tailles 36 à 54 et Couleurs Personnalisées -->
   <div id="adminModal" class="hidden fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
     <div class="bg-white rounded-3xl p-6 max-w-lg w-full max-h-[90vh] overflow-y-auto">
       <div class="flex justify-between items-center pb-4 border-b">
@@ -202,20 +214,64 @@
       </div>
 
       <div class="mt-4 bg-stone-50 p-4 rounded-2xl border border-stone-200">
-        <h4 class="font-bold text-xs uppercase tracking-wider text-amber-800 mb-3">+ إضافة منتج جديد</h4>
+        <h4 class="font-bold text-xs uppercase tracking-wider text-amber-800 mb-3">+ إضافة موديل جديد</h4>
         <div class="space-y-3">
-          <input type="text" id="newProdName" placeholder="اسم المنتج (مثال: Robe Sama)" class="w-full border p-2 text-xs rounded-lg" />
-          <input type="number" id="newProdPrice" placeholder="السعر بالدينار (مثال: 4900)" class="w-full border p-2 text-xs rounded-lg" />
-          <input type="text" id="newProdCat" placeholder="الفئة (مثال: Vêtements)" class="w-full border p-2 text-xs rounded-lg" />
-          <input type="text" id="newProdImg" placeholder="رابط صورة المنتج" class="w-full border p-2 text-xs rounded-lg" />
-          <button onclick="addNewProduct()" class="w-full bg-amber-800 hover:bg-amber-700 text-white font-bold py-2 rounded-lg text-xs">
+          <div>
+            <label class="block text-[11px] font-semibold text-stone-600 mb-1">اسم الموديل</label>
+            <input type="text" id="newProdName" placeholder="مثال: Robe Sama" class="w-full border p-2 text-xs rounded-lg bg-white" />
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-stone-600 mb-1">السعر بالدينار (DZD)</label>
+            <input type="number" id="newProdPrice" placeholder="مثال: 4700" class="w-full border p-2 text-xs rounded-lg bg-white" />
+          </div>
+
+          <div>
+            <label class="block text-[11px] font-semibold text-stone-600 mb-1">التصنيف</label>
+            <input type="text" id="newProdCat" placeholder="مثال: Robe hiver, Abaya, Robe soirée..." class="w-full border p-2 text-xs rounded-lg bg-white" />
+          </div>
+
+          <!-- Sélection des tailles (36 à 54) -->
+          <div>
+            <label class="block text-[11px] font-semibold text-stone-700 mb-1.5">المقاسات المتوفرة (حددي المقاسات المتوفرة لهذا الموديل) :</label>
+            <div class="grid grid-cols-5 gap-2 bg-white p-2.5 rounded-lg border border-stone-200 text-xs">
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="36" /> 36</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="38" checked /> 38</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="40" checked /> 40</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="42" checked /> 42</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="44" checked /> 44</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="46" /> 46</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="48" /> 48</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="50" /> 50</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="52" /> 52</label>
+              <label class="flex items-center gap-1 cursor-pointer"><input type="checkbox" name="sizeCheck" value="54" /> 54</label>
+            </div>
+          </div>
+
+          <!-- Saisie libre des couleurs -->
+          <div>
+            <label class="block text-[11px] font-semibold text-stone-600 mb-1">الألوان المتوفرة (اكتبي الألوان مفصولة بفاصلة)</label>
+            <input type="text" id="newProdColors" placeholder="مثال: Noir, Beige, Vert émeraude, Marron, Bleu nuit..." class="w-full border p-2 text-xs rounded-lg bg-white" />
+          </div>
+
+          <!-- Photo depuis la galerie -->
+          <div>
+            <label class="block text-[11px] font-semibold text-stone-700 mb-1">صورة الموديل من الهاتف (Galerie Photo)</label>
+            <input type="file" id="newProdFile" accept="image/*" class="w-full text-xs text-stone-600 file:mr-3 file:py-2 file:px-3 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-100 file:text-amber-900 hover:file:bg-amber-200" />
+            <div id="imagePreviewContainer" class="mt-2 hidden">
+              <img id="imagePreview" src="" alt="Aperçu" class="h-24 w-24 object-cover rounded-xl border border-stone-300" />
+            </div>
+          </div>
+
+          <button onclick="addNewProduct()" class="w-full bg-amber-800 hover:bg-amber-700 text-white font-bold py-2.5 rounded-lg text-xs shadow mt-2">
             حفظ وإضافة للمتجر فوراً
           </button>
         </div>
       </div>
 
+      <!-- Liste des modèles actuels -->
       <div class="mt-6">
-        <h4 class="font-bold text-xs uppercase tracking-wider text-stone-600 mb-3">المنتجات المعروضة</h4>
+        <h4 class="font-bold text-xs uppercase tracking-wider text-stone-600 mb-3">الموديلات المعروضة حالياً</h4>
         <div id="adminProductsList" class="space-y-2"></div>
       </div>
     </div>
@@ -233,15 +289,31 @@
       {
         id: 1,
         nom: "Robe Sama",
-        prix: 4900,
-        cat: "Vêtements",
+        prix: 4700,
+        cat: "Robe hiver",
+        sizes: ["38", "40", "42", "44"],
+        colors: ["Noir", "Beige", "Vert émeraude"],
         image: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80"
       }
     ];
 
     let products = JSON.parse(localStorage.getItem('mo_products')) || defaultProducts;
-    let selectedPrice = 4900;
+    let selectedProduct = products[0] || null;
     let currentLang = 'fr';
+    let base64Image = '';
+
+    document.getElementById('newProdFile').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function(event) {
+          base64Image = event.target.result;
+          document.getElementById('imagePreview').src = base64Image;
+          document.getElementById('imagePreviewContainer').classList.remove('hidden');
+        };
+        reader.readAsDataURL(file);
+      }
+    });
 
     function renderProducts() {
       const container = document.getElementById('productsList');
@@ -249,26 +321,32 @@
       container.innerHTML = '';
       adminContainer.innerHTML = '';
 
-      if (products.length > 0) {
-        document.getElementById('selectedItem').value = products[0].nom;
-        selectedPrice = products[0].prix;
+      if (products.length > 0 && !selectedProduct) {
+        selectProductByIndex(0);
       }
 
       products.forEach((p, idx) => {
+        const sizesBadges = (p.sizes || []).map(s => `<span class="bg-stone-100 text-stone-800 text-[10px] font-semibold px-2 py-0.5 rounded border border-stone-200">${s}</span>`).join(' ');
+        const colorsBadges = (p.colors || []).map(c => `<span class="bg-amber-50 text-amber-900 border border-amber-200 text-[10px] px-2 py-0.5 rounded">${c}</span>`).join(' ');
+
         container.innerHTML += `
           <div class="bg-white rounded-3xl shadow-sm border border-stone-200 overflow-hidden flex flex-col justify-between">
             <div class="h-72 bg-stone-100 overflow-hidden relative">
-              <img src="${p.image}" alt="${p.nom}" class="h-full w-full object-cover" onerror="this.src='https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80'" />
+              <img src="${p.image}" alt="${p.nom}" class="h-full w-full object-cover" />
               <span class="absolute top-4 right-4 bg-amber-800 text-white text-[10px] font-bold px-2.5 py-1 rounded-full uppercase">M&O</span>
             </div>
             <div class="p-5 flex-grow flex flex-col justify-between">
               <div>
-                <span class="text-[11px] font-semibold uppercase text-amber-700">${p.cat}</span>
+                <span class="text-[11px] font-semibold uppercase text-amber-700">${p.cat || 'Vêtements'}</span>
                 <h4 class="brand-font font-bold text-stone-900 text-lg mt-1">${p.nom}</h4>
+                <div class="mt-3 space-y-1.5">
+                  <div class="flex flex-wrap gap-1 items-center"><span class="text-[10px] font-bold text-stone-400">Tailles:</span> ${sizesBadges}</div>
+                  <div class="flex flex-wrap gap-1 items-center"><span class="text-[10px] font-bold text-stone-400">Couleurs:</span> ${colorsBadges}</div>
+                </div>
               </div>
               <div class="mt-5 flex items-center justify-between pt-3 border-t border-stone-100">
                 <p class="text-lg font-extrabold text-stone-900">${p.prix.toLocaleString()} DZD</p>
-                <button onclick="selectProduct('${p.nom}', ${p.prix})" class="bg-stone-900 hover:bg-stone-800 text-white text-xs px-4 py-2 rounded-xl font-medium shadow">
+                <button onclick="selectProductByIndex(${idx})" class="bg-stone-900 hover:bg-stone-800 text-white text-xs px-4 py-2 rounded-xl font-medium shadow">
                   Commander
                 </button>
               </div>
@@ -279,7 +357,7 @@
         adminContainer.innerHTML += `
           <div class="flex items-center justify-between p-2.5 bg-stone-50 border rounded-xl text-xs">
             <div class="flex items-center gap-2">
-              <img src="${p.image}" class="w-8 h-8 rounded object-cover" />
+              <img src="${p.image}" class="w-10 h-10 rounded-lg object-cover" />
               <div>
                 <p class="font-bold text-stone-800">${p.nom}</p>
                 <p class="text-stone-500">${p.prix} DZD</p>
@@ -290,14 +368,32 @@
         `;
       });
 
+      if (selectedProduct) {
+        updateOrderVariants();
+      }
       updateDeliveryFee();
     }
 
-    function selectProduct(name, price) {
-      document.getElementById('selectedItem').value = name;
-      selectedPrice = price;
+    function selectProductByIndex(idx) {
+      selectedProduct = products[idx];
+      document.getElementById('selectedItem').value = selectedProduct.nom;
+      updateOrderVariants();
       updateDeliveryFee();
       document.getElementById('commande-section').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function updateOrderVariants() {
+      if (!selectedProduct) return;
+      const sizeSelect = document.getElementById('selectedSize');
+      const colorSelect = document.getElementById('selectedColor');
+
+      sizeSelect.innerHTML = (selectedProduct.sizes && selectedProduct.sizes.length) 
+        ? selectedProduct.sizes.map(s => `<option value="${s}">Taille ${s}</option>`).join('')
+        : '<option value="Standard">Standard</option>';
+
+      colorSelect.innerHTML = (selectedProduct.colors && selectedProduct.colors.length)
+        ? selectedProduct.colors.map(c => `<option value="${c}">${c}</option>`).join('')
+        : '<option value="Unique">Couleur unique</option>';
     }
 
     function updateDeliveryFee() {
@@ -305,9 +401,10 @@
       const selectedOption = select.options[select.selectedIndex];
       const isHome = document.querySelector('input[name="deliveryType"]:checked').value === 'home';
       const fee = parseInt(isHome ? selectedOption.getAttribute('data-fee-home') : selectedOption.getAttribute('data-fee-desk'));
-      const total = selectedPrice + fee;
+      const price = selectedProduct ? selectedProduct.prix : 0;
+      const total = price + fee;
 
-      document.getElementById('sumItemPrice').textContent = selectedPrice.toLocaleString() + ' DZD';
+      document.getElementById('sumItemPrice').textContent = price.toLocaleString() + ' DZD';
       document.getElementById('sumShipping').textContent = fee.toLocaleString() + ' DZD';
       document.getElementById('sumTotal').textContent = total.toLocaleString() + ' DZD';
     }
@@ -317,6 +414,8 @@
       const name = document.getElementById('custName').value;
       const phone = document.getElementById('custPhone').value;
       const item = document.getElementById('selectedItem').value;
+      const size = document.getElementById('selectedSize').value;
+      const color = document.getElementById('selectedColor').value;
       const select = document.getElementById('wilayaSelect');
       const wilayaName = select.options[select.selectedIndex].text;
       const isHome = document.querySelector('input[name="deliveryType"]:checked').value === 'home';
@@ -326,7 +425,16 @@
       document.getElementById('orderSuccess').classList.remove('hidden');
       document.getElementById('orderForm').classList.add('hidden');
 
-      const waMsg = encodeURIComponent("Bonjour M&O Elegance, nouvelle commande pour : " + item + " (" + total + "). Nom: " + name + " | Tel: " + phone + " | Wilaya: " + wilayaName + " (" + typeStr + ")");
+      const waMsg = encodeURIComponent(
+        `Bonjour M&O Elegance, nouvelle commande :\n` +
+        `- Modèle : ${item}\n` +
+        `- Taille : ${size}\n` +
+        `- Couleur : ${color}\n` +
+        `- Total : ${total}\n` +
+        `- Nom : ${name}\n` +
+        `- Téléphone : ${phone}\n` +
+        `- Wilaya : ${wilayaName} (${typeStr})`
+      );
       document.getElementById('waLink').href = "https://wa.me/213555000000?text=" + waMsg;
     }
 
@@ -347,27 +455,40 @@
       const nom = document.getElementById('newProdName').value;
       const prix = parseInt(document.getElementById('newProdPrice').value);
       const cat = document.getElementById('newProdCat').value || "Vêtements";
-      const image = document.getElementById('newProdImg').value || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80";
+      const colorsRaw = document.getElementById('newProdColors').value;
+
+      const checkedSizes = [];
+      document.querySelectorAll('input[name="sizeCheck"]:checked').forEach(cb => {
+        checkedSizes.push(cb.value);
+      });
 
       if (!nom || !prix) {
-        alert("يرجى إدخال اسم المنتج وسعره!");
+        alert("يرجى إدخال اسم الموديل وسعره على الأقل!");
         return;
       }
 
-      products.push({ id: Date.now(), nom, prix, cat, image });
+      const sizes = checkedSizes.length ? checkedSizes : ["Standard"];
+      const colors = colorsRaw ? colorsRaw.split(',').map(c => c.trim()).filter(Boolean) : ["Unique"];
+      const image = base64Image || "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?auto=format&fit=crop&w=700&q=80";
+
+      products.push({ id: Date.now(), nom, prix, cat, sizes, colors, image });
       localStorage.setItem('mo_products', JSON.stringify(products));
       renderProducts();
 
       document.getElementById('newProdName').value = '';
       document.getElementById('newProdPrice').value = '';
       document.getElementById('newProdCat').value = '';
-      document.getElementById('newProdImg').value = '';
+      document.getElementById('newProdColors').value = '';
+      document.getElementById('newProdFile').value = '';
+      base64Image = '';
+      document.getElementById('imagePreviewContainer').classList.add('hidden');
+
       closeAdmin();
-      alert("تمت إضافة المنتج بنجاح إلى المتجر!");
+      alert("تم حفظ الموديل بنجاح بالمقاسات والألوان المحددة!");
     }
 
     function deleteProduct(index) {
-      if (confirm("هل أنتِ متأكدة من حذف هذا المنتج؟")) {
+      if (confirm("هل أنتِ متأكدة من حذف هذا الموديل؟")) {
         products.splice(index, 1);
         localStorage.setItem('mo_products', JSON.stringify(products));
         renderProducts();
